@@ -11,35 +11,58 @@ datasource db {
 }
 
 model User {
-  userId Int @id @default(autoincrement())
-  firstName String @db.VarChar(20)
-  lastName String @db.VarChar(20)
-  email String @unique
-  password String
-  imageUrl String @db.VarChar(255)
-  bio String @db.VarChar(255)
-  isAdmin Boolean @default(false)
+  userId    Int        @id @default(autoincrement())
+  firstName String     @db.VarChar(20)
+  lastName  String     @db.VarChar(20)
+  email     String     @unique
+  password  String
+  imageUrl  String     @db.VarChar(255)
+  bio       String     @db.VarChar(255)
+  isAdmin   Boolean    @default(false)
+  posts     Posts[] // Sans cette ligne : erreur sur la ligne author de Posts
+  comments  Comments[]
+  friends   Friends[]
 }
 
 model Posts {
-  postId Int @id @default(autoincrement())
-  userId Int
-  title String
+  postId      Int         @id @default(autoincrement())
+  author      User        @relation(fields: [authorId], references: [userId])
+  authorId    Int
+  title       String
   textContent String
-  imgContent String
-  date DateTime
+  imgContent  String
+  date        DateTime
+  comments    Comments[]
+  likesPost   LikesPost[]
 }
 
 model Comments {
-  comId Int @id @default(autoincrement())
-  postId Int
-  userId String
-  textContent String
-  date DateTime
+  comId         Int            @id @default(autoincrement())
+  post          Posts          @relation(fields: [postId], references: [postId])
+  postId        Int
+  author        User           @relation(fields: [authorId], references: [userId])
+  authorId      Int
+  textContent   String
+  date          DateTime
+  likesComments LikesComment[]
 }
 
-model Likes {
-  likeId Int @id @default(autoincrement())
-  postId Boolean @default(true)
+model LikesPost {
+  likeId Int     @id @default(autoincrement())
+  posts  Posts[]
   userId Int
+}
+
+model LikesComment {
+  likeId   Int        @id @default(autoincrement())
+  comments Comments[]
+  userId   Int
+}
+
+model Friends {
+  id          Int  @id @default(autoincrement())
+  userLiker   User @relation(fields: [userLikerId], references: [userId])
+  userLikerId Int
+  userLikedId Int
+
 }
