@@ -1,0 +1,86 @@
+
+
+.container {
+    display: flex;
+    flex-direction: column;
+    //justify-content: center;
+    align-items: flex-start;
+    font-size: 1.4rem;
+    width: 100vw;
+    height: 100vh;
+    margin: 0px;
+    padding: 0px;
+}
+
+.sous-container {
+    width: 100%;
+    display: flex;
+    //flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo {
+    max-width: 800px;
+    margin: 10px 5px;
+    &__img  {
+        max-width: 100%;
+        height: auto;
+    }
+}
+
+.cards {
+    width: 540px;
+    height: 675px;
+    position: relative;
+    margin: 0 10px;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 0;
+    font-size: 2rem;
+}
+
+.cadre {
+    background-color: #90abd5;
+    //border: 2px solid gray ;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    padding: 25px;
+    width: 75%;
+    height: 75%;
+    &__signin {
+        position: absolute;
+        bottom: 0px;
+        right: 0px;
+        z-index: 1;
+        box-shadow: -5px -5px 6px 0px rgba(0,0,0,0.66);
+    }
+    &__signup {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        z-index: 0;
+        box-shadow: 5px 5px 6px 0px rgba(0,0,0,0.66);
+    }
+}
+
+.form {
+    &__question {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+input {
+    height: 40px;
+    border-radius: 10px;
+}
+
+p {
+    color: red;
+    margin: 5px 0 5px 0;
+    font-size: 1rem;
+}

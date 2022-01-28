@@ -1,0 +1,6 @@
+body {
+    /* background-color: #122542; */
+    background-image: url("./logobig2.png"), url("./fd.png");
+    background-repeat: no-repeat, repeat;
+    background-position: 1100px 200px ;
+}
