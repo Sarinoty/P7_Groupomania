@@ -5,6 +5,6 @@ module.exports = (req, res, next) => {
         return next();
     }
     else {
-        return res.status(400).json({message: 'Le mot de passe doit être composé de 7 à 20 caractères avec des majuscules et minuscules, au moins un chiffre et sans espace.'})
+        return res.status(200).json({message: 'invalidPassword'})
     }
 };

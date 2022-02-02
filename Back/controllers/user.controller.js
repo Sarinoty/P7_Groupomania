@@ -7,33 +7,47 @@ const fs = require('fs');
 const prisma = new PrismaClient()
 
 exports.signup = async (req, res, next) => {
-    try {
-        const salt = bcrypt.genSaltSync(14);
-        const passwordHashed = bcrypt.hashSync(req.body.password, salt)
+    if (!verifNames(req.body.firstName))
+        res.status(200).json({message: 'badInputFirstName'});
+    else if (!verifNames(req.body.lastName))
+        res.status(200).json({message: 'badInputLastName'});
+    else {
+        try {
+            const salt = bcrypt.genSaltSync(14);
+            const passwordHashed = bcrypt.hashSync(req.body.password, salt)
 
-        const User = await prisma.user.create({
-            data: {
-                firstName: req.body.firstName,
-                lastName: req.body.lastName,
-                email: req.body.email,
-                password: passwordHashed,
-                imageUrl: '',
-                bio: ''
-            }
-            })
-            .then(() => res.status(201).json({message: 'Utilisateur créé avec succès.'}))
-            .catch (e => {
-                if (e instanceof Prisma.PrismaClientKnownRequestError) {
-                    // The .code property can be accessed in a type-safe manner
-                    if (e.code === 'P2002') {
-                      console.log('There is a unique constraint violation, a new user cannot be created with this email');
-                      res.status(401).json({message : 'Il existe déjà un utilisateur ayant cette adresse e-mail !'});
+            const User = await prisma.user.create({
+                data: {
+                    firstName: req.body.firstName,
+                    lastName: req.body.lastName,
+                    email: req.body.email,
+                    password: passwordHashed,
+                    imageUrl: '',
+                    bio: ''
+                }
+                })
+                .then((data) => {
+                    console.log(data)
+                    const token = createToken(data.userId);
+                    res.cookie('jwt', token, {httpOnly: true, maxAge: '64800000'});
+                    res.status(201).json({message: 'success'});
+                })
+                .catch (e => {
+                    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+                        if (e.code === 'P2002') {
+                        console.log('There is a unique constraint violation, a new user cannot be created with this email');
+                        res.status(200).json({message : 'exists'});
+                        }
                     }
-                  }
-                  throw e
-            });
+                    throw e
+                });
+        }
+        catch {error => res.status(500).json({error})};
     }
-    catch {error => res.status(500).json({error})};
+};
+
+const createToken = (id) => {
+    return jwt.sign({id}, process.env.SECRET_WORD, {expiresIn: '18h'})
 };
 
 exports.login = async (req, res, next) => {
@@ -43,22 +57,18 @@ exports.login = async (req, res, next) => {
         },
     })
     .then(userData => {
-        if(!userData) {return res.status(401).json({error: 'Utilisateur non présent dans la base de données.'})}
+        if(!userData) {
+            return res.status(200).json({message: 'unknown'})}
         bcrypt.compare(req.body.password, userData.password)
             .then(valid => {
                 if(!valid) {
-                    return res.status(401).json({error: 'Mot de passe incorrect.'});
+                    return res.status(200).json({message: 'mdpIncorrect'});
                 }
-                res.status(201).json({
-                    userId: userData.userId,
-                    token: jwt.sign(
-                        {userId : userData.userId},
-                        process.env.SECRET_WORD,
-                        {expiresIn: '18h'}
-                    )
-                });
+                const token = createToken(userData.userId);
+                res.cookie('jwt', token, {httpOnly: true, maxAge: '64800000'})
+                res.status(200).json({userId: userData.userId});
             })
-            .catch(error => res.status(500).json({error}));;
+            .catch((error) => res.status(500).json({error}));;
     })
     .catch(error => res.status(500).json({error}));
 };
@@ -106,3 +116,7 @@ exports.deleteProfile = async (req, res, next) => {
         .then(() => res.status(200).json({message: "Utilisateur supprimée avec succès !"}))
         .catch(e => res.status(500).json({message: "Erreur dans deleteProfile"}));
 };
+
+function verifNames(n) {
+    return /^[^@&"()!_$*€£`+=\/;?#\d]+$/.test(n);
+}

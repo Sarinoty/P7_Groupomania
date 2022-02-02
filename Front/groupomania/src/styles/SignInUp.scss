@@ -5,7 +5,7 @@
     flex-direction: column;
     //justify-content: center;
     align-items: flex-start;
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     width: 100vw;
     height: 100vh;
     margin: 0px;
@@ -30,8 +30,8 @@
 }
 
 .cards {
-    width: 540px;
-    height: 675px;
+    width: 500px;
+    height: 650px;
     position: relative;
     margin: 0 10px;
 }
@@ -39,7 +39,8 @@
 h1 {
     text-align: center;
     margin-top: 0;
-    font-size: 2rem;
+    font-size: 1.8rem;
+    margin-bottom: 15px;
 }
 
 .cadre {
@@ -50,7 +51,7 @@ h1 {
     flex-direction: column;
     padding: 25px;
     width: 75%;
-    height: 75%;
+    height: 80%;
     &__signin {
         position: absolute;
         bottom: 0px;
@@ -72,11 +73,27 @@ h1 {
         display: flex;
         flex-direction: column;
     }
+    &__butt {
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+        &__button {
+            background-color: #90abd5;
+            width: 35%;
+            height: 40px;
+            font-size: 1.3rem;
+            //border: 1px solid black;
+            box-shadow: 5px 5px 5px -1px rgba(0,0,0,0.66);
+        }
+    }
 }
 
 input {
-    height: 40px;
+    height: 35px;
     border-radius: 10px;
+    padding-left: 7px;
+    font-size: 1rem;
+    color: rgb(56, 56, 56);
 }
 
 p {
