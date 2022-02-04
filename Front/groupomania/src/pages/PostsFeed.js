@@ -1,9 +1,15 @@
 import React from 'react';
+import Header from '../components/header/Header';
+import Post from '../components/posts/Post';
+import '../styles/general.scss';
 
 const PostsFeed = () => {
     return (
-        <div>
-            Hello depuis le fil de messages
+        <div className='greatContainer'>
+            <Header />
+            <div className='feedContainer'>
+                <Post />
+            </div>
         </div>
     );
 };

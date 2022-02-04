@@ -1,0 +1,42 @@
+.header {
+    //background-color: gray;
+    height: 9vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    //padding: 0 20px;
+}
+
+.logoHeader {
+    height: auto;
+    &__img {
+        //height: 95%;
+        max-height: 95%;
+        max-width: 50vw;
+    }
+}
+
+nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    max-width: 150px;
+}
+
+.space {
+    grid-column: 2;
+}
+
+.fas {
+    font-size: 2rem;
+    color: #90abd5;
+    &--user {
+        grid-column: 1;
+    }
+    &--exit {
+        grid-column: 3;
+    }
+    &:hover {
+        cursor: pointer;
+    }
+}
