@@ -1,18 +1,14 @@
-//import axios from 'axios';
-import React, { Component, useState } from 'react';
-//import { useSelector } from 'react-redux';
-//import { zIndex } from '../../actions/log.action';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { POST } from '../../utils/axios';
 import ENDPOINTS from '../../utils/endpoints';
 
-/* class SignUpForm extends Component {
-    render() { */
 const SignUpForm = (props) => {
         const [email, setEmail] = useState('');
         const [firstName, setFirstName] = useState('');
         const [lastName, setLastName] = useState('');
         const [password, setPassword] = useState('');
-        //const zindex = useSelector((state) => state.logReducer);
+        const zindex = useSelector((state) => state.logReducer);
 
         const handleSignUp = (event) => {
             event.preventDefault();
@@ -49,6 +45,8 @@ const SignUpForm = (props) => {
                         passwordError.innerHTML = 'Le mot de passe doit contenir 7 à 20 caractères, au moins une majuscule, une minuscule et un chiffre et ne contenir aucun espace';
                         break;
                     case 'success' :
+                        sessionStorage.setItem('currentUser', res.data.user);
+                        sessionStorage.setItem('token', res.data.token);
                         window.location = '/postsfeed';
                         break;
                     default :
@@ -62,7 +60,7 @@ const SignUpForm = (props) => {
 
 
         return (
-            <div onClick={/* this. */props.increment} className='cadre cadre__signup' style={{zIndex: /* this. */props.counter}}>
+            <div onClick={props.increment} className='cadre cadre__signup' style={{zIndex: zindex}}>
                 <h1>S'incrire</h1>
                 <form method='get' className='form' onSubmit={handleSignUp}>
                     <div className='form__question'>
@@ -115,7 +113,6 @@ const SignUpForm = (props) => {
                 </form>
             </div>
         );
-    /* } */
 };
 
 export default SignUpForm;

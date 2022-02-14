@@ -29,8 +29,7 @@ exports.signup = async (req, res, next) => {
                 .then((data) => {
                     console.log(data)
                     const token = createToken(data.userId);
-                    res.cookie('jwt', token, {httpOnly: true, maxAge: '64800000'});
-                    res.status(201).json({message: 'success'});
+                    res.status(201).json({message: 'success', user: data.userId, token: token});
                 })
                 .catch (e => {
                     if (e instanceof Prisma.PrismaClientKnownRequestError) {
@@ -65,8 +64,7 @@ exports.login = async (req, res, next) => {
                     return res.status(200).json({message: 'mdpIncorrect'});
                 }
                 const token = createToken(userData.userId);
-                res.cookie('jwt', token, {httpOnly: true, maxAge: '64800000'})
-                res.status(200).json({userId: userData.userId});
+                res.status(200).json({currentUser: userData.userId, token: token});
             })
             .catch((error) => res.status(500).json({error}));;
     })

@@ -3,6 +3,11 @@ import '../../styles/Header.scss';
 import { faSignOutAlt, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+const exit = () => {
+    sessionStorage.clear();
+    window.location = '/';
+};
+
 const Header = () => {
     return (
         <div className="header">
@@ -12,7 +17,7 @@ const Header = () => {
                     <FontAwesomeIcon icon={faUser} className='fas fas--user'/>
                 </a>
                 <div className='space'></div>
-                <FontAwesomeIcon icon={faSignOutAlt} className='fas fas--exit'/>
+                <FontAwesomeIcon icon={faSignOutAlt} className='fas fas--exit' onClick={exit}/>
             </nav>
         </div>
     );

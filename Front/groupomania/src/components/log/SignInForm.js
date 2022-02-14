@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-//import { zIndex } from '../../actions/log.action';
 import { POST } from '../../utils/axios';
 import ENDPOINTS from '../../utils/endpoints';
 
@@ -23,6 +22,8 @@ const SignInForm = (props) => {
                 passwordError.innerHTML = 'Mot de passe incorrect !';
             }
             else {
+                sessionStorage.setItem('currentUser', res.data.currentUser);
+                sessionStorage.setItem('token', res.data.token);
                 window.location = '/postsfeed';
             }
         }).catch((e) => {

@@ -4,7 +4,6 @@ import SignInForm from '../components/log/SignInForm'
 import { changeIndex, decrement } from '../actions/log.action';
 
 const mapStateToProps = (state) => {
-   //console.log(state)
    return {
       counter: state
    };

@@ -1,7 +1,8 @@
 import React from "react";
 import '../../styles/Post.scss';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes, faThumbsUp, faCommentAlt } from "@fortawesome/free-solid-svg-icons";
+import { faTimes, faThumbsUp, faCommentAlt, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import Comment from "./Comment";
 
 const Post = () => {
     return (
@@ -34,7 +35,10 @@ const Post = () => {
             </div>
             <div className="post__comment">
                 <input className="post__comment--input" placeholder="Ajoutez un commentaire..."></input>
+                <FontAwesomeIcon icon={faPaperPlane} className="post__comment--send"/>
             </div>
+            <Comment />
+            <Comment />
         </div>
     )
 };

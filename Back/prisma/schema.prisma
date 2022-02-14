@@ -16,8 +16,8 @@ model User {
   lastName  String     @db.VarChar(20)
   email     String     @unique
   password  String
-  imageUrl  String     @db.VarChar(255)
-  bio       String     @db.VarChar(255)
+  imageUrl  String?    @db.VarChar(255)
+  bio       String?    @db.VarChar(255)
   isAdmin   Boolean    @default(false)
   posts     Posts[] // Sans cette ligne : erreur sur la ligne author de Posts
   comments  Comments[]
@@ -28,10 +28,9 @@ model Posts {
   postId      Int         @id @default(autoincrement())
   author      User        @relation(fields: [authorId], references: [userId])
   authorId    Int
-  title       String
   textContent String
-  imgContent  String
-  date        DateTime
+  imgContent  String?
+  date        BigInt      @db.BigInt
   comments    Comments[]
   likesPost   LikesPost[]
 }
@@ -43,7 +42,7 @@ model Comments {
   author        User           @relation(fields: [authorId], references: [userId])
   authorId      Int
   textContent   String
-  date          DateTime
+  date          Int
   likesComments LikesComment[]
 }
 
