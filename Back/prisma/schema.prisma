@@ -30,7 +30,7 @@ model Posts {
   authorId    Int
   textContent String
   imgContent  String?
-  date        BigInt      @db.BigInt
+  date        String
   comments    Comments[]
   likesPost   LikesPost[]
 }
@@ -42,7 +42,7 @@ model Comments {
   author        User           @relation(fields: [authorId], references: [userId])
   authorId      Int
   textContent   String
-  date          Int
+  date          String
   likesComments LikesComment[]
 }
 

@@ -9,49 +9,51 @@ import '../../styles/Post.scss';
 
 const PostCreator = () => {
     const [message, setMessage] = useState('');
-    const [postPicture, setPostPicture] = useState(null);
+    //const [postPicture, setPostPicture] = useState(null);
     const [file, setFile] = useState();
-    const userData = useSelector((state) => state.logReducer);
+    //const userData = useSelector((state) => state.logReducer);
     const dispatch = useDispatch();
 
     const handlePost = async () => {
         if (message || file) {
-            const date = Date.now();
+            const date = Date.now().toString();
             let data = {};
             if (file) {
                 data = {
-                    'authorId': sessionStorage.currentUser,
+                    'userId': parseInt(sessionStorage.currentUser), // ça c'est pour checker l'userId dans le middleware authorize
+                    'authorId': parseInt(sessionStorage.currentUser),
                     'textContent': message,
                     'imgContent': file,
                     'date': date
                 }
-                //console.log(date);
+                console.log(typeof(file));
+                console.log(file);
             }
             else {
                 data = {
-                    'authorId': sessionStorage.currentUser,
+                    'userId': parseInt(sessionStorage.currentUser), // ça c'est pour checker l'userId dans le middleware authorize
+                    'authorId': parseInt(sessionStorage.currentUser),
                     'textContent': message,
                     'date': date
                 }
-                //console.log(data);
             }
 
             await dispatch(addPost(data));
-            dispatch(getPosts());
+            //dispatch(getPosts());
             
             /* const data = new FormData();
-            data.append('authorId', userData.userId);
+            data.append('authorId', parseInt(sessionStorage.currentUser));
             data.append('textContent', message);
             if (file) data.append('imgContent', file);
-            console.log(data.message); */
-            /* await dispatch(addPost(data));
-            dispatch(getPosts()) */
+            data.append('date', date);
+            await dispatch(addPost(data)); */
+            //dispatch(getPosts()) */
         }
         else alert('Veuillez écrire un message');
     }
 
     const handlePicture = (e) => {
-        setPostPicture(URL.createObjectURL(e.target.files[0])); // Permet d'afficher l'image dans le post
+        //setPostPicture(URL.createObjectURL(e.target.files[0])); // Permet d'afficher l'image dans le post
         setFile(e.target.files[0]);
     }
 

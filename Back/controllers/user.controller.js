@@ -46,7 +46,11 @@ exports.signup = async (req, res, next) => {
 };
 
 const createToken = (id) => {
-    return jwt.sign({id}, process.env.SECRET_WORD, {expiresIn: '18h'})
+    return jwt.sign(
+        {id},
+        process.env.SECRET_WORD,
+        {expiresIn: '18h'}
+    )
 };
 
 exports.login = async (req, res, next) => {
@@ -64,6 +68,7 @@ exports.login = async (req, res, next) => {
                     return res.status(200).json({message: 'mdpIncorrect'});
                 }
                 const token = createToken(userData.userId);
+                console.log('token créé ' + token)
                 res.status(200).json({currentUser: userData.userId, token: token});
             })
             .catch((error) => res.status(500).json({error}));;
@@ -114,6 +119,23 @@ exports.deleteProfile = async (req, res, next) => {
         .then(() => res.status(200).json({message: "Utilisateur supprimée avec succès !"}))
         .catch(e => res.status(500).json({message: "Erreur dans deleteProfile"}));
 };
+
+exports.getAllUsers = async (req, res, next) => { // Nécessite l'envoie de l'userId dans le body de la requête pour passer le middleware authorize
+    const getAllUsers = await prisma.user.findMany()
+        .then(users => res.status(200).json(users))
+        .catch(e => res.status(500).json({message: 'Echec de la requête de récupération des users'}));
+}
+
+exports.getUser = async (req, res, next) => {
+    const getUser = await prisma.user.findUnique({
+        where: {
+            userId: parseInt(req.params.id)
+        }
+    }).then((user) => {
+        if (user) res.status(200).json(user)
+        else res.status(404).json({message: 'Il n\'y a pas d\'utilisateur ayant cet identifiant dans la base de données.'})})
+    .catch(() => res.status(500).json({message: 'Echec de la requête pour récupérer 1 utilisateur'}));
+}
 
 function verifNames(n) {
     return /^[^@&"()!_$*€£`+=\/;?#\d]+$/.test(n);

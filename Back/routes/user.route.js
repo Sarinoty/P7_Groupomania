@@ -4,8 +4,8 @@ const authorize = require('../middlewares/authorize');
 const multer = require('../middlewares/multer');
 const userController = require('../controllers/user.controller');
 
-/* router.get('/', authorize, userController.getAllUsers);
-router.get('/:id', authorize, userController.getUser); */
+router.get('/', authorize, userController.getAllUsers);
+router.get('/:id', authorize, userController.getUser);
 router.put('/updateProfile/:userId', authorize, multer, userController.updateProfile);
 router.delete('/deleteProfile/:userId', authorize, userController.deleteProfile);
 

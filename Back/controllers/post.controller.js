@@ -2,10 +2,8 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 exports.addPost = async (req, res, next) => {
-    /* console.log('Message de test');
-    console.log(req.body); */
-
     try {
+        // Ici il n'y a pas de req.file et le req.body.imgContent est un objet vide.
         const {authorId, textContent, date} = req.body;
         const Post = await prisma.posts.create({
             data: {
@@ -25,10 +23,11 @@ exports.getAllPosts = async (req, res, next) => {
         orderBy: {
             date: 'asc'
         }
-    }).then(data => {
-        console.log('Voici les datas : ');
-        console.log(typeof(data));
-        console.log(data); // On obtient bien data dans le bash
-        res.status(201).json({message : 'Pourquoi j\'arrive à envoyer ce message mais pas les data...'});
-    }).catch(e => res.status(403).json({e}));
+    }).then((data) => {
+        const donnees = JSON.stringify(data);
+        res.status(200).json(data);
+    }).catch(e => {
+        res.status(403).json({e});
+        console.log(e);
+    });
 }
