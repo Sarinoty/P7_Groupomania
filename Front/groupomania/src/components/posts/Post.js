@@ -4,16 +4,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faThumbsUp, faCommentAlt, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import Comment from "./Comment";
 import { isEmpty } from "../Utils";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { dateParser } from '../../utils/Date';
+import { deletePost, getPosts } from "../../actions/post.action";
 
 const Post = ({post}) => {
     const usersData = useSelector((state) => state.usersReducer);
     const userData = useSelector((state) => state.userReducer);
+    const dispatch = useDispatch();
     //console.log(userData.imageUrl);
     //console.log(!isEmpty(usersData[0]));
     //console.log(usersData.map((user) => {if (user.userId === post.authorId) return user.imageUrl;}).join(''));
     // Sur thispersondoesnotexist ça sert à rien de copier un lien d'image, ça fournira tjs une image aléatoire. Vaut mieux les copier et éventuellement les héberger ailleurs.
+
     return (
         <div className="post" key={post.postId}>
             <div className="post__head">
@@ -27,7 +30,12 @@ const Post = ({post}) => {
                 </div>
                 <div className="post__head__delete">
                     {post.authorId === parseInt(sessionStorage.currentUser) && (
-                        <FontAwesomeIcon icon={faTimes} className='fas-times' />
+                        <FontAwesomeIcon icon={faTimes} className='fas-times' onClick={ async() => {
+                            if (window.confirm("Etes-vous sûr(e) ?\n(Cette action est irréversible)")) {
+                                await dispatch(deletePost(post.postId));
+                                dispatch(getPosts());
+                            }
+                        }} />
                     )}
                     
                 </div>

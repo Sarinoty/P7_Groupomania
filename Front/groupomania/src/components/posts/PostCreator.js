@@ -43,6 +43,7 @@ const PostCreator = () => {
 
             await dispatch(addPost(data));
             dispatch(getPosts());
+            setMessage('');
             
             /* const data = new FormData();
             data.append('authorId', parseInt(sessionStorage.currentUser));

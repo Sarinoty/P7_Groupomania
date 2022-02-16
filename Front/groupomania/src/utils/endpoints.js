@@ -4,7 +4,8 @@ const endpoints = {
     ADD_POST: 'api/post/',
     GET_POSTS: 'api/post/',
     GET_USERS: 'api/user/',
-    GET_USER: 'api/user/'
+    GET_USER: 'api/user/',
+    DELETE_POST: 'api/post/'
 }
 
 export default endpoints;

@@ -1,11 +1,11 @@
-import { GET, POST } from "../utils/axios";
+import { DELETE, GET, POST } from "../utils/axios";
 import ENDPOINTS from '../utils/endpoints';
 
 export const ADD_POST = "ADD_POST";
 export const GET_POSTS = "GET_POSTS";
 
 export const addPost = (data) => {
-    console.log(data);
+    //console.log(data);
     return (/* dispatch */) => {
         return POST(ENDPOINTS.ADD_POST, data)
             .then((res) => {
@@ -22,5 +22,15 @@ export const getPosts = () => {
                 console.log(res)
                 dispatch({type: GET_POSTS, payload: res.data});
             }).catch (e => console.log('Erreur : ' + e))
+    }
+}
+
+export const deletePost = (id) => {
+    return () => {
+        return DELETE(`${ENDPOINTS.DELETE_POST}${id}`)
+            .then((res) => {
+                console.log(res)
+            })
+            .catch(e => console.log(e));
     }
 }

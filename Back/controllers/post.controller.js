@@ -31,3 +31,14 @@ exports.getAllPosts = async (req, res, next) => {
         console.log(e);
     });
 }
+
+exports.deletePost = async (req, res, next) => {
+    console.log(typeof(req.params.id));
+    console.log(req.params.id);
+    const deletePost = await prisma.posts.delete({
+        where : {
+            postId : parseInt(req.params.id)
+        }
+    }).then(res.status(200).json({message: 'Post supprimé avec succès.'}
+    )).catch(e => res.status(500).json(e));
+}
