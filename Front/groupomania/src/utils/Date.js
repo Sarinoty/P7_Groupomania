@@ -12,6 +12,6 @@ export const dateParser = (num) => {
     //let timestamp = Date.parse(num);
   
     let date = new Date(num).toLocaleDateString("fr-FR", options);
-  console.log(date)
+  //console.log(date)
     return date.toString();
   };

@@ -6,6 +6,7 @@ import { faImage } from "@fortawesome/free-regular-svg-icons";
 import { addPost, getPosts } from '../../actions/post.action';
 import {dateParser } from '../../utils/Date';
 import '../../styles/Post.scss';
+import { isEmpty } from "../Utils";
 
 const PostCreator = () => {
     const [message, setMessage] = useState('');
@@ -13,6 +14,8 @@ const PostCreator = () => {
     const [file, setFile] = useState();
     //const userData = useSelector((state) => state.logReducer);
     const dispatch = useDispatch();
+
+    const userData = useSelector((state) => state.userReducer);
 
     const handlePost = async () => {
         if (message || file) {
@@ -39,7 +42,7 @@ const PostCreator = () => {
             }
 
             await dispatch(addPost(data));
-            //dispatch(getPosts());
+            dispatch(getPosts());
             
             /* const data = new FormData();
             data.append('authorId', parseInt(sessionStorage.currentUser));
@@ -56,12 +59,12 @@ const PostCreator = () => {
         //setPostPicture(URL.createObjectURL(e.target.files[0])); // Permet d'afficher l'image dans le post
         setFile(e.target.files[0]);
     }
-
+console.log(!isEmpty(userData.imageUrl));
     return (
         <div className="post">
             <div className="post__creator__rowOne">
                 <div className="post__creator__rowOne__pic">
-                    <img className="post__creator__rowOne__pic--img" src="./imgs/user.png" alt=""></img>
+                    <img className="post__creator__rowOne__pic--img" src={isEmpty(userData.imageUrl) ? "./imgs/user.png" : userData.imageUrl} alt=""></img>
                 </div>
                 <textarea className="post__creator__rowOne__input"
                     placeholder="Exprimez-vous !"

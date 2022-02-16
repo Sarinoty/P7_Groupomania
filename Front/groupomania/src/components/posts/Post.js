@@ -5,33 +5,47 @@ import { faTimes, faThumbsUp, faCommentAlt, faPaperPlane } from "@fortawesome/fr
 import Comment from "./Comment";
 import { isEmpty } from "../Utils";
 import { useSelector } from "react-redux";
+import { dateParser } from '../../utils/Date';
 
 const Post = ({post}) => {
     const usersData = useSelector((state) => state.usersReducer);
     const userData = useSelector((state) => state.userReducer);
+    //console.log(userData.imageUrl);
+    //console.log(!isEmpty(usersData[0]));
+    //console.log(usersData.map((user) => {if (user.userId === post.authorId) return user.imageUrl;}).join(''));
+    // Sur thispersondoesnotexist ça sert à rien de copier un lien d'image, ça fournira tjs une image aléatoire. Vaut mieux les copier et éventuellement les héberger ailleurs.
     return (
-        <li className="post" key={post._id}>
+        <div className="post" key={post.postId}>
             <div className="post__head">
                 <div className="post__head__infos">
                     <div className="post__head__infos__img">
                         <img className="post__head__infos__img--img" src={!isEmpty(usersData[0]) &&
                             usersData.map((user) => {if (user.userId === post.authorId) return user.imageUrl;}).join('')} alt="Avatar de l'utilisateur"></img>
                     </div>
-                    <div className="post__head__infos__name">Yohann Brionne</div>
-                    <div className="post__head__infos__date">Posté le 27/01/1981</div>
+                    <div className="post__head__infos__name">{!isEmpty(usersData[0]) && usersData.map((user) => {if(user.userId === post.authorId) return user.firstName + ' ' + user.lastName})}</div>
+                    <div className="post__head__infos__date">{'Posté le ' + dateParser(parseInt(post.date))}</div>
                 </div>
                 <div className="post__head__delete">
-                    <FontAwesomeIcon icon={faTimes} className='fas-times' />
+                    {post.authorId === parseInt(sessionStorage.currentUser) && (
+                        <FontAwesomeIcon icon={faTimes} className='fas-times' />
+                    )}
+                    
                 </div>
             </div>
-            <div className="post__text">Ceci est un post de test !</div>
-            <div className="post__content">
-                <img className="post__content--img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Alfa_Romeo_Giulia_Quadrifoglio_Leonberg_2019_IMG_0106.jpg/1280px-Alfa_Romeo_Giulia_Quadrifoglio_Leonberg_2019_IMG_0106.jpg" alt=""></img>
-            </div>
+            {!isEmpty(post.textContent) && (
+                <div className="post__text">{post.textContent}</div>
+            )}
+            
+            {post.imgContent && (
+                <div className="post__content">
+                    <img className="post__content--img" src=/*" https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Alfa_Romeo_Giulia_Quadrifoglio_Leonberg_2019_IMG_0106.jpg/1280px-Alfa_Romeo_Giulia_Quadrifoglio_Leonberg_2019_IMG_0106.jpg */"https://www.thispersondoesnotexist.com/image" alt=""></img>
+                </div>
+            )}
+            
             <div className="post__stuff">
                 <div className="post__stuff__likes">
                     <FontAwesomeIcon icon={faThumbsUp} /> {/* Pour les icones vides c'est "far" au lieu de "fas" */}
-                    <p className="post__stuff__numbers">0</p>
+                    <p className="post__stuff__numbers">0</p> {/* Comprendre comment fonctionne les relations entre tables pour retrouver le nbre de commentaires */}
                 </div>
                 <div className="post__stuff__comments">
                     <FontAwesomeIcon icon={faCommentAlt} />
@@ -43,8 +57,8 @@ const Post = ({post}) => {
                 <FontAwesomeIcon icon={faPaperPlane} className="post__comment--send"/>
             </div>
             <Comment />
-            <Comment />
-        </li>
+            
+        </div>
     )
 };
 

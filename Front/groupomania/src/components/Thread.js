@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getPosts } from "../actions/post.action";
+import { getUser } from "../actions/user.action";
+import { getUsers } from "../actions/users.action";
 import Post from "./posts/Post";
 import { isEmpty } from "./Utils";
 
@@ -11,19 +13,19 @@ const Thread = () => {
 
     useEffect(() => {
         if (loadPost) {
-            dispatch(getPosts())
+            dispatch(getPosts());
+            dispatch(getUsers());
+            dispatch(getUser(parseInt(sessionStorage.currentUser)));
             setLoadPost(false);
         }
     }, [loadPost, dispatch])
     
     return (
         <div>
-            <ul>
-                {!isEmpty(posts[0]) &&
-                posts.map((post) => {
-                    return <Post post={post} key={post._id} />
-                })}
-            </ul>
+            {!isEmpty(posts[0]) &&
+            posts.map((post) => {
+                return <Post post={post} key={post.postId} />
+            })}
         </div>
     )
 }
