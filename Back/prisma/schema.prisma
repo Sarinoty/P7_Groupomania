@@ -20,7 +20,7 @@ model User {
   bio       String?    @db.VarChar(255)
   isAdmin   Boolean    @default(false)
   posts     Posts[] // Sans cette ligne : erreur sur la ligne author de Posts
-  comments  Comments[]
+  //comments  Comments[]
   friends   Friends[]
 }
 
@@ -31,19 +31,19 @@ model Posts {
   textContent String
   imgContent  String?
   date        String
-  comments    Comments[]
+  //comments    Comments[]
   likesPost   LikesPost[]
 }
 
 model Comments {
   comId         Int            @id @default(autoincrement())
-  post          Posts          @relation(fields: [postId], references: [postId])
+  //post          Posts          @relation(fields: [postId], references: [postId])
   postId        Int
-  author        User           @relation(fields: [authorId], references: [userId])
+  //author        User           @relation(fields: [authorId], references: [userId])
   authorId      Int
   textContent   String
   date          String
-  likesComments LikesComment[]
+  //likesComments LikesComment[]
 }
 
 model LikesPost {
@@ -54,7 +54,7 @@ model LikesPost {
 
 model LikesComment {
   likeId   Int        @id @default(autoincrement())
-  comments Comments[]
+  //comments Comments[]
   userId   Int
 }
 

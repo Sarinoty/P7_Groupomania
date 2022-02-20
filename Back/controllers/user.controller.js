@@ -22,7 +22,7 @@ exports.signup = async (req, res, next) => {
                     lastName: req.body.lastName,
                     email: req.body.email,
                     password: passwordHashed,
-                    imageUrl: '',
+                    imageUrl: 'http://localhost:4000/images/noAvatar.png',
                     bio: ''
                 }
                 })

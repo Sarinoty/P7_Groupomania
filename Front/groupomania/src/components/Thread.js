@@ -21,7 +21,7 @@ const Thread = () => {
     }, [loadPost, dispatch])
     
     return (
-        <div>
+        <div className="thread">
             {!isEmpty(posts[0]) &&
             posts.map((post) => {
                 return <Post post={post} key={post.postId} />

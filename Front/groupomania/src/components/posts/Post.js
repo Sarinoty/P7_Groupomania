@@ -10,12 +10,8 @@ import { deletePost, getPosts } from "../../actions/post.action";
 
 const Post = ({post}) => {
     const usersData = useSelector((state) => state.usersReducer);
-    const userData = useSelector((state) => state.userReducer);
+    //const userData = useSelector((state) => state.userReducer);
     const dispatch = useDispatch();
-    //console.log(userData.imageUrl);
-    //console.log(!isEmpty(usersData[0]));
-    //console.log(usersData.map((user) => {if (user.userId === post.authorId) return user.imageUrl;}).join(''));
-    // Sur thispersondoesnotexist ça sert à rien de copier un lien d'image, ça fournira tjs une image aléatoire. Vaut mieux les copier et éventuellement les héberger ailleurs.
 
     return (
         <div className="post" key={post.postId}>
@@ -23,7 +19,8 @@ const Post = ({post}) => {
                 <div className="post__head__infos">
                     <div className="post__head__infos__img">
                         <img className="post__head__infos__img--img" src={!isEmpty(usersData[0]) &&
-                            usersData.map((user) => {if (user.userId === post.authorId) return user.imageUrl;}).join('')} alt="Avatar de l'utilisateur"></img>
+                            usersData.map((user) => {if (user.userId === post.authorId) {return user.imageUrl;}}).join('')}
+                                alt="Avatar de l'utilisateur"></img>
                     </div>
                     <div className="post__head__infos__name">{!isEmpty(usersData[0]) && usersData.map((user) => {if(user.userId === post.authorId) return user.firstName + ' ' + user.lastName})}</div>
                     <div className="post__head__infos__date">{'Posté le ' + dateParser(parseInt(post.date))}</div>
@@ -33,7 +30,7 @@ const Post = ({post}) => {
                         <FontAwesomeIcon icon={faTimes} className='fas-times' onClick={ async() => {
                             if (window.confirm("Etes-vous sûr(e) ?\n(Cette action est irréversible)")) {
                                 await dispatch(deletePost(post.postId));
-                                dispatch(getPosts());
+                                dispatch(getPosts()); // Des fois ça ne se recharge pas...
                             }
                         }} />
                     )}
@@ -46,7 +43,7 @@ const Post = ({post}) => {
             
             {post.imgContent && (
                 <div className="post__content">
-                    <img className="post__content--img" src=/*" https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Alfa_Romeo_Giulia_Quadrifoglio_Leonberg_2019_IMG_0106.jpg/1280px-Alfa_Romeo_Giulia_Quadrifoglio_Leonberg_2019_IMG_0106.jpg */"https://www.thispersondoesnotexist.com/image" alt=""></img>
+                    <img className="post__content--img" src={post.imgContent} alt=""></img>
                 </div>
             )}
             
@@ -64,7 +61,7 @@ const Post = ({post}) => {
                 <input className="post__comment--input" placeholder="Ajoutez un commentaire..."></input>
                 <FontAwesomeIcon icon={faPaperPlane} className="post__comment--send"/>
             </div>
-            <Comment />
+            {/* <Comment /> */}
             
         </div>
     )
