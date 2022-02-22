@@ -32,7 +32,7 @@ model Posts {
   imgContent  String?
   date        String
   //comments    Comments[]
-  likesPost   LikesPost[]
+  //likesPost   LikesPost[]
 }
 
 model Comments {
@@ -46,16 +46,11 @@ model Comments {
   //likesComments LikesComment[]
 }
 
-model LikesPost {
+model Likes {
   likeId Int     @id @default(autoincrement())
-  posts  Posts[]
+  postId Int
+  //posts  Posts[]
   userId Int
-}
-
-model LikesComment {
-  likeId   Int        @id @default(autoincrement())
-  //comments Comments[]
-  userId   Int
 }
 
 model Friends {

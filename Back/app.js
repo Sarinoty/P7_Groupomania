@@ -5,6 +5,7 @@ const authRouter = require('./routes/auth.route');
 const userRouter = require('./routes/user.route');
 const postRouter = require('./routes/post.route');
 const commentRouter = require('./routes/comment.route');
+const likeRouter = require('./routes/like.route');
 const path = require('path');
 
 const app = express();
@@ -20,5 +21,6 @@ app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
 app.use('/api/post', postRouter);
 app.use('/api/comment', commentRouter);
+app.use('/api/likes', likeRouter);
 
 module.exports = app;

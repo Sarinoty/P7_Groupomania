@@ -49,7 +49,7 @@ console.log(!isEmpty(userData.imageUrl));
                     onChange={(e) => setMessage(e.target.value)}
                     value={message}></textarea>
                 <div className="post__creator__rowOne__send">
-                    <FontAwesomeIcon icon={faPaperPlane} onClick={handlePost}/>
+                    <FontAwesomeIcon icon={faPaperPlane} className="comAndLike" onClick={handlePost}/>
                 </div>
             </div>
             <div className="post__creator__rowTwo">

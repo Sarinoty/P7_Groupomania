@@ -88,6 +88,9 @@
             border: 1px solid gray;
             min-width: 100px;
             border-radius: 4px;
+            &:hover {
+                cursor: pointer;
+            }
         }
         &__comments {
             border: 1px solid gray;
@@ -98,6 +101,9 @@
             min-width: 100px;
             margin-left: 15px;
             border-radius: 4px;
+            &:hover {
+                cursor: pointer;
+            }
         }
         &__numbers {
             margin-left: 15px;
@@ -115,6 +121,7 @@
         &--send {
             font-size: 1.2rem;
             margin-left: 5px;
+            cursor: pointer;
         }
     }
     &__creator {
@@ -189,6 +196,7 @@
 .fas-times {
     font-size: 1.2rem;
     margin: 10px;
+    cursor: pointer;
 }
 
 .divider {
@@ -237,5 +245,14 @@
         justify-content: flex-start;
         width: 95%;
         font-size: 0.8rem;
+    }
+}
+
+.comAndLike {
+    &:hover {
+        cursor: pointer;
+    }
+    &--red {
+        color: red;
     }
 }

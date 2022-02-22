@@ -5,7 +5,7 @@ exports.addPost = async (req, res, next) => {
     try {
         if (req.file) {
             const {authorId, textContent, date} = req.body; // On destructure
-            const imgContent = 'http://localhost:4000/' + req.file.path; // Quelle url faut-il ?
+            const imgContent = 'http://localhost:4000/' + req.file.path;
             const Post = await prisma.posts.create({
                 data: {
                     authorId: parseInt(authorId),

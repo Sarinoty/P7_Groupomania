@@ -5,7 +5,13 @@ const endpoints = {
     GET_POSTS: 'api/post/',
     GET_USERS: 'api/user/',
     GET_USER: 'api/user/',
-    DELETE_POST: 'api/post/'
+    DELETE_POST: 'api/post/',
+    ADD_COMMENT: 'api/comment/',
+    GET_COMMENTS: 'api/comment/',
+    DELETE_COMMENT: 'api/comment/',
+    GET_LIKES: 'api/likes/',
+    ADD_LIKE: 'api/likes/',
+    DELETE_LIKE: 'api/likes/'
 }
 
 export default endpoints;

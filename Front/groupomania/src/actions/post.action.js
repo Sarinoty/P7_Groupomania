@@ -5,7 +5,7 @@ export const ADD_POST = "ADD_POST";
 export const GET_POSTS = "GET_POSTS";
 
 export const addPost = (data) => {
-    return (/* dispatch */) => {
+    return () => {
         return POST(ENDPOINTS.ADD_POST, data)
             .then((res) => {
                 console.log(res)
