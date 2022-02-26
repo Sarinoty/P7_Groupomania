@@ -6,7 +6,7 @@ const userController = require('../controllers/user.controller');
 
 router.get('/', authorize, userController.getAllUsers);
 router.get('/:id', authorize, userController.getUser);
-//router.put('/updateProfile/:userId', authorize, multer, userController.updateProfile);
+router.patch('/updateProfile/:userId', authorize, multer.single("imageUrl"), userController.updateProfile);
 router.delete('/deleteProfile/:userId', authorize, userController.deleteProfile);
 
 /* router.get('/friends/', authorize, userController.getFriends);

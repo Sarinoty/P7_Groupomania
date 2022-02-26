@@ -16,6 +16,8 @@ export const getLikes = () => {
 
 export const deleteLike = (data) => {
     return () => {
+        // En passant 2 paramètres dans l'url on n'envoie pas de data avec la requête.
+        // Si on veut ajouter des datas à la reqête il faudra aussi le spécifier dans axios.
         return DELETE(`${ENDPOINTS.DELETE_LIKE}${data.postId}/${data.userId}`)
             .catch(e => console.log('Erreur : ' + e))
     }

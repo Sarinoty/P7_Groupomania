@@ -5,6 +5,7 @@ const postController = require('../controllers/post.controller');
 const multer = require('../middlewares/multer');
 
 router.get('/', authorize, postController.getAllPosts);
+router.get('/:authorId/:date', postController.getPost);
 /*router.get('/:id', authorize, postController.getPostByUser); */
 router.post('/', authorize, multer.single("imgContent"), postController.addPost);
 //router.put('/:id', authorize, multer, postController.updatePost);

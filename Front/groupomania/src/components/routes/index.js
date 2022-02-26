@@ -9,7 +9,7 @@ const index = () => {
     <Router>
         <Switch>
           <Route path='/' exact component={Home} />
-          <Route path='/profile' exact component={Profile} />
+          <Route path='/profile:id' exact component={Profile} />
           <Route path='/postsfeed' exact component={PostsFeed} />
           <Redirect to='/' />
         </Switch>

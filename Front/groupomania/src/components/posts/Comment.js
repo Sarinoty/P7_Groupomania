@@ -18,11 +18,13 @@ const Comment = (com) => {
             <div className="divider"></div>
             <div className="comment__head">
                 <div className="comment__head__identity">
-                    <img
-                        className="comment__head__avatar"
-                        src={usersData.map((user) => {if(user.userId === com.comment.authorId) return user.imageUrl}).join('')}
-                        alt="avatar"
-                        ></img>
+                    <div className="comment__head__avatar">
+                        <img
+                            className="comment__head__avatar--img"
+                            src={usersData.map((user) => {if(user.userId === com.comment.authorId) return user.imageUrl}).join('')}
+                            alt="avatar">
+                        </img>
+                    </div>
                     <div className="comment__head__name">{usersData.map((user) => {if(user.userId === com.comment.authorId) return user.firstName + ' ' + user.lastName})}</div>
                 </div>
                 {com.comment.authorId === parseInt(sessionStorage.currentUser) && (

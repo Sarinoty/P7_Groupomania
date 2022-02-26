@@ -22,12 +22,11 @@ exports.signup = async (req, res, next) => {
                     lastName: req.body.lastName,
                     email: req.body.email,
                     password: passwordHashed,
-                    imageUrl: 'http://localhost:4000/images/noAvatar.png',
+                    imageUrl: 'http://localhost:4000/images/noAvatar2.png', // En cas de modification ne pas oublier de modifier aussi updateProfile
                     bio: ''
                 }
                 })
                 .then((data) => {
-                    console.log(data)
                     const token = createToken(data.userId);
                     res.status(201).json({message: 'success', user: data.userId, token: token});
                 })
@@ -76,12 +75,52 @@ exports.login = async (req, res, next) => {
     .catch(error => res.status(500).json({error}));
 };
 
+const recupBool = (string) => {
+    switch (string) {
+        case 'true' :
+            return true;
+        case 'false' :
+            return false;
+    }
+}
+
 exports.updateProfile = async (req, res, next) => {
-    const userProfile = req.file ?
-    {
-        ...JSON.parse(req.body.user),
-        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-    } : {...req.body};
+    let userProfile = null;
+    const emailPrivate = recupBool(req.body.emailPrivate);
+    if (req.file) {
+        if (req.body.password) {
+            userProfile = {
+                email: req.body.email,
+                emailPrivate: req.body.emailPrivate,
+                password: crypting(req.body.password),
+                imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+                bio: req.body.bio
+            }
+        }
+        else {
+            userProfile = {
+                email: req.body.email,
+                emailPrivate: req.body.emailPrivate,
+                imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+                bio: req.body.bio
+            }
+        }
+    }
+    else if (req.body.password) {
+        userProfile = {
+            email: req.body.email,
+            emailPrivate: req.body.emailPrivate,
+            password: crypting(req.body.password),
+            bio: req.body.bio
+        }
+    }
+    else {
+        userProfile = {
+            email: req.body.email,
+            emailPrivate: emailPrivate,
+            bio: req.body.bio
+        }
+    }
 
     if (req.file) {
         const findOldImg = await prisma.user.findUnique({
@@ -90,7 +129,7 @@ exports.updateProfile = async (req, res, next) => {
             }
         })
         .then(data => {
-            if (data.imageUrl !== '') {
+            if (data.imageUrl !== 'http://localhost:4000/images/noAvatar2.png') {
                 const fileToDelete = data.imageUrl.split('/images/')[1];
                 fs.unlink(`images/${fileToDelete}`, () => {
                     console.log("Ancienne image supprimée.");
@@ -107,7 +146,7 @@ exports.updateProfile = async (req, res, next) => {
         data: userProfile
     })
     .then(() => res.status(200).json({message: 'Profil modifié avec succès'}))
-    .catch(e => res.status(500).json({message: 'Erreur dans updateUser'}));
+    .catch(e => res.status(500).json({message: 'Erreur dans updateUser', e}));
 };
 
 exports.deleteProfile = async (req, res, next) => {
@@ -135,6 +174,13 @@ exports.getUser = async (req, res, next) => {
         if (user) res.status(200).json(user)
         else res.status(404).json({message: 'Il n\'y a pas d\'utilisateur ayant cet identifiant dans la base de données.'})})
     .catch(() => res.status(500).json({message: 'Echec de la requête pour récupérer 1 utilisateur'}));
+}
+
+function crypting(password) {
+    try {
+        const salt = bcrypt.genSaltSync(14);
+        return bcrypt.hashSync(password, salt)
+    } catch {(e) => console.log('Une erreur est survenue dans la fonction crypting : ' + e)}
 }
 
 function verifNames(n) {

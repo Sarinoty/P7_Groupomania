@@ -18,6 +18,7 @@ const Post = ({post}) => {
     const usersData = useSelector((state) => state.usersReducer);
     const commentsData = useSelector((state => state.commentReducer));
     const likesData = useSelector((state) => state.likesReducer);
+    //const postsData = useSelector((state) => state.postReducer);
     //const userData = useSelector((state) => state.userReducer);
     const [comText, setComText] = useState('');
     const [viewComments, setViewComments] = useState(false);
@@ -27,20 +28,23 @@ const Post = ({post}) => {
 
     const nbComments = () => {
         let nb = 0;
-        commentsData.forEach(comment => {
+        //commentsData.forEach(comment => {
+        Array.prototype.forEach.call(commentsData, comment => {
             if(comment.postId === post.postId) nb++;
         })
         return nb;
     }
     const nbLikes = () => {
         let nb = 0;
-        likesData.forEach(like => {
+        //likesData.forEach(like => {
+        Array.prototype.forEach.call(likesData, like => {
             if(like.postId === post.postId) nb++;
         })
         return nb;
     }
     const isLikedByUser = () => {
-        const liked = likesData.find(like => like.postId === post.postId && like.userId === parseInt(sessionStorage.currentUser));
+        //const liked = likesData.find(like => like.postId === post.postId && like.userId === parseInt(sessionStorage.currentUser));
+        const liked = Array.from(likesData).find(like => like.postId === post.postId && like.userId === parseInt(sessionStorage.currentUser));
         if (liked === undefined) return false;
         else return true;
     }
@@ -58,7 +62,7 @@ const Post = ({post}) => {
             dispatch(getAllComments());
             setComText('');
         }
-        else console.log('ça vient là');
+        else console.log('ça vient là'); // A finir
     }
 
     const sendLike = async () => {
@@ -81,11 +85,16 @@ const Post = ({post}) => {
             <div className="post__head">
                 <div className="post__head__infos">
                     <div className="post__head__infos__img">
-                        <img className="post__head__infos__img--img" src={!isEmpty(usersData[0]) &&
-                            usersData.map((user) => {if (user.userId === post.authorId) {return user.imageUrl;}}).join('')}
+                        <img className="post__head__infos__img--img" src={!isEmpty(usersData[0])
+                             ?usersData.map((user) => {
+                                if (user.userId === post.authorId) return user.imageUrl;
+                                else return null;}).join('')
+                            : 'http://localhost:4000/images/noAvatar2.png'}
                                 alt="Avatar de l'utilisateur"></img>
                     </div>
-                    <div className="post__head__infos__name">{!isEmpty(usersData[0]) && usersData.map((user) => {if(user.userId === post.authorId) return user.firstName + ' ' + user.lastName})}</div>
+                    <div className="post__head__infos__name">{!isEmpty(usersData[0]) && usersData.map((user) => {
+                        if(user.userId === post.authorId) return user.firstName + ' ' + user.lastName
+                        else return null})}</div>
                     <div className="post__head__infos__date">{'Posté le ' + dateParser(parseInt(post.date))}</div>
                 </div>
                 <div className="post__head__delete">

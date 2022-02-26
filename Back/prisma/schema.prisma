@@ -11,22 +11,23 @@ datasource db {
 }
 
 model User {
-  userId    Int        @id @default(autoincrement())
-  firstName String     @db.VarChar(20)
-  lastName  String     @db.VarChar(20)
-  email     String     @unique
-  password  String
-  imageUrl  String?    @db.VarChar(255)
-  bio       String?    @db.VarChar(255)
-  isAdmin   Boolean    @default(false)
-  posts     Posts[] // Sans cette ligne : erreur sur la ligne author de Posts
+  userId       Int       @id @default(autoincrement())
+  firstName    String    @db.VarChar(20)
+  lastName     String    @db.VarChar(20)
+  email        String    @unique
+  emailPrivate Boolean   @default(false)
+  password     String
+  imageUrl     String?   @db.VarChar(255)
+  bio          String?   @db.VarChar(255)
+  isAdmin      Boolean   @default(false)
+  posts        Posts[] // Sans cette ligne : erreur sur la ligne author de Posts
   //comments  Comments[]
-  friends   Friends[]
+  friends      Friends[]
 }
 
 model Posts {
-  postId      Int         @id @default(autoincrement())
-  author      User        @relation(fields: [authorId], references: [userId])
+  postId      Int     @id @default(autoincrement())
+  author      User    @relation(fields: [authorId], references: [userId])
   authorId    Int
   textContent String
   imgContent  String?
@@ -36,18 +37,18 @@ model Posts {
 }
 
 model Comments {
-  comId         Int            @id @default(autoincrement())
+  comId       Int    @id @default(autoincrement())
   //post          Posts          @relation(fields: [postId], references: [postId])
-  postId        Int
+  postId      Int
   //author        User           @relation(fields: [authorId], references: [userId])
-  authorId      Int
-  textContent   String
-  date          String
+  authorId    Int
+  textContent String
+  date        String
   //likesComments LikesComment[]
 }
 
 model Likes {
-  likeId Int     @id @default(autoincrement())
+  likeId Int @id @default(autoincrement())
   postId Int
   //posts  Posts[]
   userId Int

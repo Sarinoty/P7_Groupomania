@@ -225,8 +225,14 @@
         }
         &__avatar {
             height: 30px;
-            border-radius: 5px;
+            //width: 30px;
             margin-right: 10px;
+            &--img {
+                object-fit: cover;
+                border-radius: 5px;
+                height: 30px;
+                width: 30px;
+            }
         }
         &__name {
             font-weight: bold;

@@ -17,14 +17,22 @@
     }
 }
 
-nav {
+.nav {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     max-width: 150px;
 }
+.nav2 {
+    max-width: 300px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+}
 
 .space {
     grid-column: 2;
+}
+.space2 {
+    grid-column: 4;
 }
 
 .fas {
@@ -33,10 +41,27 @@ nav {
     &--user {
         grid-column: 1;
     }
+    &--user2 {
+        grid-column: 3;
+    }
     &--exit {
         grid-column: 3;
     }
+    &--exit2 {
+        grid-column: 5;
+    }
     &:hover {
         cursor: pointer;
+    }
+}
+
+.linkUser {
+    width: 35px;
+    height: 35px;
+    &__img {
+        object-fit: cover;
+        border-radius: 10px;
+        height: 35px;
+        width: 35px;
     }
 }

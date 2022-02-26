@@ -7,6 +7,9 @@ import { addPost, getPosts } from '../../actions/post.action';
 //import {dateParser } from '../../utils/Date';
 import '../../styles/Post.scss';
 import { isEmpty } from "../Utils";
+//import { GET } from "../../utils/axios";
+//import endpoints from "../../utils/endpoints";
+//import { $CombinedState } from "redux";
 
 const PostCreator = () => {
     const [message, setMessage] = useState('');
@@ -16,20 +19,39 @@ const PostCreator = () => {
     const dispatch = useDispatch();
 
     const userData = useSelector((state) => state.userReducer);
+    //const postsData = useSelector((state) => state.postReducer);
 
     const handlePost = async () => {
         if (message || file) {
             const date = Date.now().toString();
-            
             const data = new FormData();
             data.append('authorId', parseInt(sessionStorage.currentUser));
             data.append('textContent', message);
             if (file) data.append('imgContent', file);
             data.append('date', date);
             await dispatch(addPost(data));
+            /* let fileName = null;
+            GET(`${endpoints.GET_POST}${sessionStorage.currentUser}/${date}`)
+                .then((res) => fileName = res.imgContent)
+                .catch(() => console.log('Echec de la récupération du fileName'))
+            console.log('Message de PostCreater')
+            console.log(fileName) */
             dispatch(getPosts())
             setMessage('');
             setFile('');
+            /* let i = 0;
+            while (i === 0) {
+                postsData.map((post) => {
+                    if (post.authorId === parseInt(sessionStorage.currentUser) && post.date === date) {
+                        i++;
+                        console.log('On ne tourne plus');
+                        dispatch(getPosts());
+                    }
+                    else {
+                        console.log('Ensore un tour');
+                        
+                    }})
+            } */
         }
         else alert('Veuillez écrire un message');
     }
@@ -37,7 +59,6 @@ const PostCreator = () => {
     const handlePicture = (e) => {
         setFile(e.target.files[0]);
     }
-console.log(!isEmpty(userData.imageUrl));
     return (
         <div className="post">
             <div className="post__creator__rowOne">
@@ -58,8 +79,8 @@ console.log(!isEmpty(userData.imageUrl));
                     <input className="post__creator__rowTwo__file--input"
                         type='file'
                         accept='.jpg, .jpeg, .png, .webp'
-                        onChange={(e) => handlePicture(e)}
-                        ></input>
+                        onChange={(e) => handlePicture(e)}>
+                    </input>
                 </div>
                 <div className="post__creator__rowTwo__emptyDiv"></div>
             </div>

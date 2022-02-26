@@ -46,6 +46,18 @@ exports.getAllPosts = async (req, res, next) => {
     });
 }
 
+exports.getPost = async (req, res) => {
+    const post = await prisma.posts.findUnique({
+        where: {
+            AND: {
+                authorId: parseInt(req.params.authorId),
+                date: req.params.date
+            }
+        }
+    }).then((data) => res.status(200).jsons(data))
+    .catch(e => res.status(500).json(e))
+}
+
 exports.deletePost = async (req, res, next) => {
     const deletePost = await prisma.posts.delete({
         where : {
