@@ -10,7 +10,7 @@ export const addComment = (data) => {
     return () => {
         return POST(ENDPOINTS.ADD_COMMENT, data)
             .then((res) => {
-                console.log(data)
+                //console.log(data)
             }
             ).catch (e => console.log('erreur : ' + e));
     }
@@ -39,6 +39,13 @@ export const getComments = (id) => {
 export const deleteComment = (id) => {
     return () => {
         return DELETE(`${ENDPOINTS.DELETE_COMMENT}${id}`)
+            .catch(e => console.log(e))
+    }
+}
+
+export const deleteCommentByPostId = (id) => {
+    return () => {
+        return DELETE(`${ENDPOINTS.DELETE_COMMENT_BYPOSTID}${id}`)
             .catch(e => console.log(e))
     }
 }

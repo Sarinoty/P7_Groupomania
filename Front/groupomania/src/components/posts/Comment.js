@@ -2,19 +2,16 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { useSelector, useDispatch } from "react-redux";
-import { dateParser, spaceBetween } from "../../utils/Date";
+import { spaceBetween } from "../../utils/Date";
 import { deleteComment, getAllComments } from "../../actions/comment.action";
 
 const Comment = (com) => {
-    const commentData = useSelector((state) => state.commentReducer);
     const usersData = useSelector((state) => state.usersReducer);
-    const postsData = useSelector((state) => state.postReducer);
+    const userData = useSelector((state) => state.userReducer);
     const dispatch = useDispatch();
 
     return (
         <div className="comment__container">
-            {console.log('console.log de test')}
-            {console.log()}
             <div className="divider"></div>
             <div className="comment__head">
                 <div className="comment__head__identity">
@@ -27,7 +24,7 @@ const Comment = (com) => {
                     </div>
                     <div className="comment__head__name">{usersData.map((user) => {if(user.userId === com.comment.authorId) return user.firstName + ' ' + user.lastName})}</div>
                 </div>
-                {com.comment.authorId === parseInt(sessionStorage.currentUser) && (
+                {(com.comment.authorId === parseInt(sessionStorage.currentUser) || userData.isAdmin)&& (
                     <FontAwesomeIcon icon={faTimes} className='fas-times' onClick={async() => {
                         if(window.confirm("Etes-vous sûr(e) ?\n(Cette action est irréversible)")) {
                             await dispatch(deleteComment(com.comment.comId));
@@ -35,7 +32,6 @@ const Comment = (com) => {
                         }
                     }}/>
                 )}
-                
             </div>
             <div className="comment__body">{com.comment.textContent}</div>
             <div className="comment__foot">{'Il y a ' + spaceBetween(com.comment.date, Date.now())}</div>

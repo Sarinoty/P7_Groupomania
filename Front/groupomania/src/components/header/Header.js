@@ -1,5 +1,4 @@
 import React from 'react';
-//import { useSelector } from 'react-redux';
 import '../../styles/Header.scss';
 import { faSignOutAlt, faUser, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -22,7 +21,6 @@ const Header = () => {
                 
                 <a className='linkUser' href={`/profile${sessionStorage.currentUser}`} title='Consulter son profil'>
                     <FontAwesomeIcon icon={faUser} className={window.location.pathname === '/postsfeed' ? 'fas fas--user' : 'fas fas--user2'}/>
-                    {/* <img className='linkUser__img' src={userData.imageUrl} alt='User avatar'/> */}
                 </a>
                 <div className={window.location.pathname === '/postsfeed' ? 'space' : 'space2'}></div>
                 <FontAwesomeIcon icon={faSignOutAlt} className={window.location.pathname === '/postsfeed' ? 'fas fas--exit' : 'fas fas--exti2'}  title='Se déconnecter' onClick={exit}/>

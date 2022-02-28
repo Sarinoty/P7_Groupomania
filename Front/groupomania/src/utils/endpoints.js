@@ -11,9 +11,11 @@ const endpoints = {
     ADD_COMMENT: 'api/comment/',
     GET_COMMENTS: 'api/comment/',
     DELETE_COMMENT: 'api/comment/',
+    DELETE_COMMENT_BYPOSTID: 'api/comment/post/',
     GET_LIKES: 'api/likes/',
     ADD_LIKE: 'api/likes/',
-    DELETE_LIKE: 'api/likes/'
+    DELETE_LIKE: 'api/likes/',
+    DELETE_LIKE_BYPOSTID: 'api/likes/'
 }
 
 export default endpoints;

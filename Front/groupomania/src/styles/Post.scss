@@ -172,6 +172,9 @@
                     left: 8px;
                     height: 30px;
                     z-index: 1;
+                    &--red {
+                        color: #fd2d01;
+                    }
                 }
                 &--input {
                     position: absolute;
@@ -259,6 +262,6 @@
         cursor: pointer;
     }
     &--red {
-        color: red;
+        color: #fd2d01;
     }
 }

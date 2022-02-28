@@ -33,3 +33,15 @@ export const deletePost = (id) => {
             .catch(e => console.log(e));
     }
 }
+
+export const deletePostByUserId = (userId) => {
+    return () => {
+        GET(`${ENDPOINTS.GET_POST}${userId}`)
+            .then((data) => {
+                console.log(data)
+                data.map((post) => { // Pas fini !!!
+
+                })
+            })
+    }
+}

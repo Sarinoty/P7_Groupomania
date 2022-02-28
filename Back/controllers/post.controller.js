@@ -1,5 +1,7 @@
 const { PrismaClient } = require('@prisma/client');
+const { findSync } = require('@prisma/client/runtime');
 const prisma = new PrismaClient();
+const fs = require('fs');
 
 exports.addPost = async (req, res, next) => {
     try {
@@ -46,6 +48,16 @@ exports.getAllPosts = async (req, res, next) => {
     });
 }
 
+exports.getPostsByUser = async (req, res, next) => {
+    const posts = await prisma.posts.findMany({
+        where: {
+            authorId : parseInt(req.params.id)
+        }
+    })
+    .then((data) => res.status(200).json(data))
+    .catch(e => {res.status(500).json(e)});
+}
+
 exports.getPost = async (req, res) => {
     const post = await prisma.posts.findUnique({
         where: {
@@ -59,6 +71,21 @@ exports.getPost = async (req, res) => {
 }
 
 exports.deletePost = async (req, res, next) => {
+    const post = await prisma.posts.findUnique({
+        where: {
+            postId : parseInt(req.params.id)
+        }
+    })
+        .then(data => {
+            if (data.imgContent !== null) {
+                const fileToDelete = data.imgContent.split('/images/')[1];
+                fs.unlink(`images/${fileToDelete}`, () => {
+                    console.log('Image du post supprimée.')
+                })
+            }
+        })
+        .catch((e) => console.log('Erreur dans findUnique de deletePost' + e))
+
     const deletePost = await prisma.posts.delete({
         where : {
             postId : parseInt(req.params.id)

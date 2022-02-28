@@ -1,4 +1,4 @@
-import React from "react";
+/* import React from "react";
 import '../styles/ProfileCard.scss';
 
 const ProfileCard = () => {
@@ -8,7 +8,7 @@ const ProfileCard = () => {
 
             </div>
             <div className="profileCard__form--container">
-                <form method="get" className="profileCard__form" /* onSubmit={} */>
+                <form method="get" className="profileCard__form" /* onSubmit={} >
                 <div className="form__question">
                         <label htmlFor="lastName">Nom :</label>
                         <input
@@ -51,4 +51,4 @@ const ProfileCard = () => {
     )
 };
 
-export default ProfileCard;
+export default ProfileCard; */

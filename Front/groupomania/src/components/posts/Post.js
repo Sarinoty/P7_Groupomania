@@ -1,16 +1,14 @@
-import React, { /* useEffect,  */useState } from "react";
+import React, { useState } from "react";
 import '../../styles/Post.scss';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faThumbsUp, faCommentAlt, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
-//import Comment from "./Comment";
 import { isEmpty } from "../Utils";
 import { useSelector, useDispatch } from "react-redux";
 import { dateParser } from '../../utils/Date';
 import { deletePost, getPosts } from "../../actions/post.action";
-//import SpaceDiv from "./SpaceDiv";
-import { addComment, getAllComments/* , getComments */ } from "../../actions/comment.action";
+import { addComment, deleteCommentByPostId, getAllComments } from "../../actions/comment.action";
 import ComThread from "./ComThread";
-import { addLike, deleteLike, getLikes } from "../../actions/like.action";
+import { addLike, deleteLike, deleteLikeByPostId, getLikes } from "../../actions/like.action";
 
 
 
@@ -18,17 +16,13 @@ const Post = ({post}) => {
     const usersData = useSelector((state) => state.usersReducer);
     const commentsData = useSelector((state => state.commentReducer));
     const likesData = useSelector((state) => state.likesReducer);
-    //const postsData = useSelector((state) => state.postReducer);
-    //const userData = useSelector((state) => state.userReducer);
+    const userData = useSelector((state) => state.userReducer);
     const [comText, setComText] = useState('');
     const [viewComments, setViewComments] = useState(false);
-    //const [comment, setComments] = useState(null);
-    //const [loading, setLoading] = useState(true);
     const dispatch = useDispatch();
 
     const nbComments = () => {
         let nb = 0;
-        //commentsData.forEach(comment => {
         Array.prototype.forEach.call(commentsData, comment => {
             if(comment.postId === post.postId) nb++;
         })
@@ -36,14 +30,12 @@ const Post = ({post}) => {
     }
     const nbLikes = () => {
         let nb = 0;
-        //likesData.forEach(like => {
         Array.prototype.forEach.call(likesData, like => {
             if(like.postId === post.postId) nb++;
         })
         return nb;
     }
     const isLikedByUser = () => {
-        //const liked = likesData.find(like => like.postId === post.postId && like.userId === parseInt(sessionStorage.currentUser));
         const liked = Array.from(likesData).find(like => like.postId === post.postId && like.userId === parseInt(sessionStorage.currentUser));
         if (liked === undefined) return false;
         else return true;
@@ -61,8 +53,8 @@ const Post = ({post}) => {
             dispatch(getPosts());
             dispatch(getAllComments());
             setComText('');
+            setViewComments(true);
         }
-        else console.log('ça vient là'); // A finir
     }
 
     const sendLike = async () => {
@@ -98,12 +90,17 @@ const Post = ({post}) => {
                     <div className="post__head__infos__date">{'Posté le ' + dateParser(parseInt(post.date))}</div>
                 </div>
                 <div className="post__head__delete">
-                    {post.authorId === parseInt(sessionStorage.currentUser) && (
+                    {(post.authorId === parseInt(sessionStorage.currentUser) || userData.isAdmin) && (
                         <FontAwesomeIcon icon={faTimes} className='fas-times' onClick={ async() => {
                             if (window.confirm("Etes-vous sûr(e) ?\n(Cette action est irréversible)")) {
+                                await dispatch(deleteCommentByPostId(post.postId));
+                                await dispatch(deleteLikeByPostId(post.postId));
                                 await dispatch(deletePost(post.postId));
+                                dispatch(getAllComments());
+                                dispatch(getLikes());
                                 dispatch(getPosts());
-                            }}} />
+                            }
+                        }} />
                     )}
                 </div>
             </div>
@@ -132,10 +129,7 @@ const Post = ({post}) => {
                 <input className="post__comment--input" placeholder="Ajoutez un commentaire..." onChange={(e) => setComText(e.target.value)} value={comText}></input>
                 <FontAwesomeIcon icon={faPaperPlane} className="post__comment--send" onClick={sendComment}/>
             </div>
-            {!viewComments ? <div className="spacediv"></div> : <ComThread postId={post.postId}/>}
-            {/* <Comment /> */} {/* // Faut essayer de faire un thread de comments. Dans le ternaire on appelle ce thread
-            Faut peut-être charger tous les coms quand on appelle le thread et ensuite on map ceux qui nous intéressent */}
-            
+            {!viewComments ? <div className="spacediv"></div> : <ComThread postId={post.postId}/>} 
         </div>
     )
 };

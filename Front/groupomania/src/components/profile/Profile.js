@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { updateUser } from "../../actions/user.action";
 import { getUser } from "../../actions/user.action";
+import { deletePostByUserId } from "../../actions/post.action";
 
 const ProfileCard = () => {
     const userData = useSelector((state) => state.userReducer);
@@ -24,7 +25,7 @@ const ProfileCard = () => {
     const dispatch = useDispatch();
     
     useEffect(() => {
-        setPrivateMail(userData.privateMail);
+        setPrivateMail(userData.emailPrivate);
         if (userToSeeId !== sessionStorage.currentUser) {
             GET(`${endpoints.GET_USER}${userToSeeId}`)
                 .then((res) => {
@@ -32,39 +33,12 @@ const ProfileCard = () => {
                 })
                 .catch(e => console.log(e))
         }
-    }, [userToSeeId, userData.privateMail], [])
+    }, [userToSeeId, userData.emailPrivate], [])
 
     const handlePicture = (e) => {
         setPicture(URL.createObjectURL(e.target.files[0]));
         setFile(e.target.files[0]);
     }
-
-/*     const handleMail = (e) => {
-        const errorMail = document.getElementById('errorMail');
-        console.log(e)
-        setMail(e)
-        if (verifMail(mail)) errorMail.innerText = '';
-        else errorMail.innerText = 'Entrez une adresse valide !';
-    }
-
-    const handlePass1 = (/* e) => {
-        //setPassword1(e);
-        const errorPass1 = document.getElementById('errorPass1');
-        console.log(password1)
-        console.log(password2)
-        if (verifPass(password1) || (!password1 && !password2)) errorPass1.innerText = '';
-        else errorPass1.innerText = 'Le mot de passe avoir au moins\n- une majuscule\n- une minuscule\n- un chiffre\n- entre 7 et 20 caractères\n- aucun espace';
-    }
-
-    const handlePass2 = (e) => {
-        const errorPass2 = document.getElementById('errorPass2');
-        setPassword2(e);
-        if (password1 === password2) errorPass2.innerText('');
-        else errorPass2.innerText = "Vous n'avez pas saisi 2 fois le même mot de passe";
-    } */
-
-    // Echec pour mettre à jour le profil. On dirait qu'aucune info n'arrive.
-    // Au chargement l'e-mail n'est pas celui du state, il est vide.
 
     const handleProfile = async () => {
         if (file || mail !== userData.email || bio || (password1 && password2) || (privateMail !== userData.emailPrivate)) {
@@ -100,8 +74,8 @@ const ProfileCard = () => {
                 }
             }
             
-            if (bio) data.append('bio', bio);
-            else data.append(userData.bio);
+            if (bio) {data.append('bio', bio);}
+            else data.append('bio', userData.bio);
             await dispatch(updateUser(userData.userId, data));
             setMail('');
             setPassword1('');
@@ -112,9 +86,14 @@ const ProfileCard = () => {
         }
     }
 
+    const handleDeleteUser = async () => {
+        if (window.confirm('Voulez-vous réellement supprimer votre compte et toutes les données associées ?')) {
+            await dispatch(deletePostByUserId(parseInt(sessionStorage.currentUser)))
+        }
+    }
+
     const nbPosts = (id) => {
         let nb = 0;
-        //postsData.forEach(post => { // Les forEach font planter...
         Array.prototype.forEach.call(postsData, post => {
             if(post.authorId === id) nb++;
         })
@@ -146,8 +125,7 @@ const ProfileCard = () => {
         return (
             <div className="profileCard">
                 <div className="profileCard__img">
-                    <img className="profileCard__img--img" src={picture ? picture : userData.imageUrl} alt='Avatar' />
-                    
+                    <img className={file ? "profileCard__img--img profileCard__img--img--borderRed" : "profileCard__img--img"} src={picture ? picture : userData.imageUrl} alt='Avatar' />
                 </div>
                 <input
                     className="profileCard__inputs__avatar"
@@ -232,7 +210,7 @@ const ProfileCard = () => {
                 <p className="profileCard__posts">{'Auteur de ' + nbPosts(userData.userId)}</p>
                 <div>    
                     <div className='profileCard__butt' onClick={() => setLocked(false)}>Modifier le profil</div>
-                    <div className='profileCard__butt'>Supprimer le compte</div>
+                    <div className='profileCard__butt' onClick={handleDeleteUser}>Supprimer le compte</div>
                 </div> 
             </div>
         )

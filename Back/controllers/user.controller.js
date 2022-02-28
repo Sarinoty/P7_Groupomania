@@ -67,7 +67,7 @@ exports.login = async (req, res, next) => {
                     return res.status(200).json({message: 'mdpIncorrect'});
                 }
                 const token = createToken(userData.userId);
-                console.log('token créé ' + token)
+                console.log('token créé ' + token) // A maintenir tant qu'on a besoin de faire des tests avec postman.
                 res.status(200).json({currentUser: userData.userId, token: token});
             })
             .catch((error) => res.status(500).json({error}));;
@@ -91,7 +91,7 @@ exports.updateProfile = async (req, res, next) => {
         if (req.body.password) {
             userProfile = {
                 email: req.body.email,
-                emailPrivate: req.body.emailPrivate,
+                emailPrivate: emailPrivate,
                 password: crypting(req.body.password),
                 imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
                 bio: req.body.bio
@@ -100,7 +100,7 @@ exports.updateProfile = async (req, res, next) => {
         else {
             userProfile = {
                 email: req.body.email,
-                emailPrivate: req.body.emailPrivate,
+                emailPrivate: emailPrivate,
                 imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
                 bio: req.body.bio
             }
@@ -109,7 +109,7 @@ exports.updateProfile = async (req, res, next) => {
     else if (req.body.password) {
         userProfile = {
             email: req.body.email,
-            emailPrivate: req.body.emailPrivate,
+            emailPrivate: emailPrivate,
             password: crypting(req.body.password),
             bio: req.body.bio
         }
