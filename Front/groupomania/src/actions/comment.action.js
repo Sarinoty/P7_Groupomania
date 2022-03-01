@@ -49,3 +49,10 @@ export const deleteCommentByPostId = (id) => {
             .catch(e => console.log(e))
     }
 }
+
+export const deleteCommentsByUserId = (id) => {
+    return () => {
+        return DELETE(`${ENDPOINTS.DELETE_COMMENTS_BYUSERID}${id}`)
+            .catch(e => console.log(e))
+    }
+}

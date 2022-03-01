@@ -8,6 +8,7 @@ Axios.defaults.headers.post['Authorization'] = 'Bearer ' + sessionStorage.token;
 Axios.defaults.headers.patch['Content-Type'] = 'application/json';
 Axios.defaults.headers.patch['Authorization'] = 'Bearer ' + sessionStorage.token;
 Axios.defaults.headers.delete['Authorization'] = 'Bearer ' + sessionStorage.token;
+Axios.defaults.headers.delete['Content-Type'] = 'application/json';
 Axios.defaults.timeout = 5000;
 
 export const GET = async (url) => {
@@ -22,6 +23,6 @@ export const PATCH = async (url, data) => {
     return await Axios.patch(url, data);
 }
 
-export const DELETE = async (url) => {
-    return await Axios.delete(url);
+export const DELETE = async (url, data) => {
+    return await Axios.delete(url, data);
 }

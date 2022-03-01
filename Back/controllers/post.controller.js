@@ -77,19 +77,23 @@ exports.deletePost = async (req, res, next) => {
         }
     })
         .then(data => {
-            if (data.imgContent !== null) {
-                const fileToDelete = data.imgContent.split('/images/')[1];
-                fs.unlink(`images/${fileToDelete}`, () => {
-                    console.log('Image du post supprimée.')
-                })
+            if(data) {
+                if (data.imgContent !== null) {
+                    const fileToDelete = data.imgContent.split('/images/')[1];
+                    fs.unlink(`images/${fileToDelete}`, () => {
+                        console.log('Image du post supprimée.')
+                    })
+                }
+                const deletePost = prisma.posts.delete({
+                    where : {
+                        postId : parseInt(req.params.id)
+                    }
+                }).then(res.status(200).json({message: 'Post supprimé avec succès.'}
+                )).catch(e => res.status(500).json(e));
             }
+            else console.log("Il n'y a pas de post à supprimer")
         })
         .catch((e) => console.log('Erreur dans findUnique de deletePost' + e))
 
-    const deletePost = await prisma.posts.delete({
-        where : {
-            postId : parseInt(req.params.id)
-        }
-    }).then(res.status(200).json({message: 'Post supprimé avec succès.'}
-    )).catch(e => res.status(500).json(e));
+    
 }

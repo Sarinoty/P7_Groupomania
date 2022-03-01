@@ -76,17 +76,18 @@ const Post = ({post}) => {
         <div className="post" key={post.postId}>
             <div className="post__head">
                 <div className="post__head__infos">
-                    <div className="post__head__infos__img">
+                    <a className="post__head__infos__img" href={`/profile${post.authorId}`}>
                         <img className="post__head__infos__img--img" src={!isEmpty(usersData[0])
                              ?usersData.map((user) => {
                                 if (user.userId === post.authorId) return user.imageUrl;
                                 else return null;}).join('')
                             : 'http://localhost:4000/images/noAvatar2.png'}
                                 alt="Avatar de l'utilisateur"></img>
-                    </div>
-                    <div className="post__head__infos__name">{!isEmpty(usersData[0]) && usersData.map((user) => {
+                    </a>
+                    <a className="post__head__infos__name" href={`/profile${post.authorId}`}>{!isEmpty(usersData[0]) && usersData.map((user) => {
                         if(user.userId === post.authorId) return user.firstName + ' ' + user.lastName
-                        else return null})}</div>
+                        else return null})}
+                    </a>
                     <div className="post__head__infos__date">{'Posté le ' + dateParser(parseInt(post.date))}</div>
                 </div>
                 <div className="post__head__delete">
@@ -120,7 +121,12 @@ const Post = ({post}) => {
                     /> 
                     <p className="post__stuff__numbers">{nbLikes()}</p>
                 </div>
-                <div className="post__stuff__comments" onClick={() => {setViewComments(!viewComments);}}>
+                <div className="post__stuff__comments" onClick={() => {
+                    if(!isEmpty(commentsData[0])) {
+                        const isThereComments = Array.from(commentsData).find(comment => comment.postId === post.postId);
+                        if (isThereComments) setViewComments(!viewComments);
+                    }
+                }}>
                     <FontAwesomeIcon icon={faCommentAlt} className='comAndLike'/>
                     <p className="post__stuff__numbers">{nbComments()}</p>
                 </div>

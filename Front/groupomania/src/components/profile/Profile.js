@@ -3,11 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import '../../styles/ProfileCard.scss';
 import { GET } from "../../utils/axios";
 import endpoints from "../../utils/endpoints";
+import { isEmpty } from "../Utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import { updateUser } from "../../actions/user.action";
+import { deleteUser, updateUser } from "../../actions/user.action";
 import { getUser } from "../../actions/user.action";
-import { deletePostByUserId } from "../../actions/post.action";
+import { deletePost } from "../../actions/post.action";
+import { deleteLikesByUserId } from "../../actions/like.action";
+import { deleteCommentsByUserId } from "../../actions/comment.action";
 
 const ProfileCard = () => {
     const userData = useSelector((state) => state.userReducer);
@@ -87,8 +90,19 @@ const ProfileCard = () => {
     }
 
     const handleDeleteUser = async () => {
-        if (window.confirm('Voulez-vous réellement supprimer votre compte et toutes les données associées ?')) {
-            await dispatch(deletePostByUserId(parseInt(sessionStorage.currentUser)))
+        if (window.confirm('Voulez-vous réellement supprimer votre compte et toutes les données associées ?\n\nCette action est irréversible !')) {
+            await dispatch(deleteLikesByUserId(parseInt(sessionStorage.currentUser)));
+            await dispatch(deleteCommentsByUserId(parseInt(sessionStorage.currentUser)));
+            if (!isEmpty(postsData[0])) {
+                Array.prototype.forEach.call(postsData, post => {
+                    if(post.authorId === parseInt(sessionStorage.currentUser)) {
+                        dispatch(deletePost(parseInt(post.postId)))
+                    }
+                })
+            }
+            await dispatch(deleteUser(parseInt(sessionStorage.currentUser)));
+            sessionStorage.clear();
+            window.location = '/';
         }
     }
 

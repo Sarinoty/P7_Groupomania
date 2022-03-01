@@ -150,12 +150,27 @@ exports.updateProfile = async (req, res, next) => {
 };
 
 exports.deleteProfile = async (req, res, next) => {
-    const deleteProfile = await prisma.user.delete({
+    const user = await prisma.user.findUnique({
         where: {
-            userId: parseInt(req.params.userId)
+            userId: parseInt(req.params.id)
         }
     })
-        .then(() => res.status(200).json({message: "Utilisateur supprimée avec succès !"}))
+    .then((data) => {
+        if (data.imageUrl !== 'http://localhost:4000/images/noAvatar2.png') {
+            const fileToDelete = data.imageUrl.split('/images')[1];
+            fs.unlink(`images/${fileToDelete}`, () => {
+                console.log('Avatar supprimé')
+            })
+        }
+    })
+    .catch(e => console.log('Erreur lors de la suppression de l\'avatar ' + e))
+    
+    const deleteProfile = await prisma.user.delete({
+        where: {
+            userId: parseInt(req.params.id)
+        }
+    })
+        .then(() => res.status(200).json({message: "Utilisateur supprimé avec succès !"}))
         .catch(e => res.status(500).json({message: "Erreur dans deleteProfile"}));
 };
 

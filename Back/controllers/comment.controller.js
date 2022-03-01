@@ -72,3 +72,16 @@ exports.deleteCommentByPostId = async (req, res) => {
     }
     catch {e => res.status(500).json(e)}
 }
+
+exports.deleteCommentsByUserId = async (req, res) => {
+    try {
+        const delComs = await prisma.comments.deleteMany({
+            where: {
+                authorId: parseInt(req.params.id)
+            }
+        })
+        .then(res.status(200).json({message: 'Commentaires supprimés'}))
+        .catch(res.status(500).json(e))
+    }
+    catch {e => res.status(500).json(e)}
+}

@@ -30,6 +30,13 @@ export const deleteLikeByPostId = (id) => {
     }
 }
 
+export const deleteLikesByUserId = (id) => {
+    return () => {
+        return DELETE(`${ENDPOINTS.DELETE_LIKE_BYUSERID}${id}`)
+            .catch(e => console.log('Erreur ' + e))
+    }
+}
+
 export const addLike = (data) => {
     return () => {
         return POST(`${ENDPOINTS.ADD_LIKE}${data.postId}/${data.userId}`)
