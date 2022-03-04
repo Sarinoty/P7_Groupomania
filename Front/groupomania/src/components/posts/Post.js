@@ -129,7 +129,6 @@ const Post = ({post}) => {
                 <div className="post__head__delete">
                     {(post.authorId === parseInt(sessionStorage.currentUser)) && (
                         <FontAwesomeIcon icon={faPencilAlt} className='fas-times post__head__delete__icons' onClick={() => setModifying(!modifying)}/>)}
-                    
                     {(post.authorId === parseInt(sessionStorage.currentUser) || userData.isAdmin) && (
                         <FontAwesomeIcon icon={faTimes} className='fas-times post__head__delete__icons' onClick={ async() => {
                             if (window.confirm("Etes-vous sûr(e) ?\n(Cette action est irréversible)")) {

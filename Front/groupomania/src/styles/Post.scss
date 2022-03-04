@@ -51,6 +51,7 @@ a {
         }
 
         &__delete {
+            @include flex-justify(row, flex-end);
             padding-right: 10px;
             padding-top: 5px;
             min-width: 73px;
