@@ -3,4 +3,5 @@ body {
     background-image: url("./imgs/logobig2.png"), url("./imgs/fd.png");
     background-repeat: no-repeat, repeat;
     background-position: 1100px 200px ;
+    background-attachment: fixed;
 }

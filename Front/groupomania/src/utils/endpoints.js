@@ -8,6 +8,7 @@ const endpoints = {
     GET_USER: 'api/user/',
     UPDATE_USER: 'api/user/updateProfile/',
     DELETE_USER: 'api/user/',
+    UPDATE_POST: 'api/post/',
     DELETE_POST: 'api/post/',
     ADD_COMMENT: 'api/comment/',
     GET_COMMENTS: 'api/comment/',

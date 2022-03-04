@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import '../../styles/Post.scss';
+import '../../styles/utils/media-queries.scss';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes, faThumbsUp, faCommentAlt, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import { faThumbsUp, faCommentAlt, faPaperPlane, faPencilAlt, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faImage } from "@fortawesome/free-regular-svg-icons";
 import { isEmpty } from "../Utils";
 import { useSelector, useDispatch } from "react-redux";
 import { dateParser } from '../../utils/Date';
-import { deletePost, getPosts } from "../../actions/post.action";
+import { deletePost, getPosts, updatePost } from "../../actions/post.action";
 import { addComment, deleteCommentByPostId, getAllComments } from "../../actions/comment.action";
 import ComThread from "./ComThread";
 import { addLike, deleteLike, deleteLikeByPostId, getLikes } from "../../actions/like.action";
@@ -18,7 +20,13 @@ const Post = ({post}) => {
     const likesData = useSelector((state) => state.likesReducer);
     const userData = useSelector((state) => state.userReducer);
     const [comText, setComText] = useState('');
+    const [viewCommentField, setViewCommentField] = useState(false);
     const [viewComments, setViewComments] = useState(false);
+    const [modifying, setModifying] = useState(false);
+    const [fileDeleted, setFileDeleted] = useState(false);
+    const [file, setFile] = useState();
+    const [picture, setPicture] = useState();
+    const [message, setMessage] = useState(post.textContent ? post.textContent : 'Ajoutez du texte');
     const dispatch = useDispatch();
 
     const nbComments = () => {
@@ -41,7 +49,8 @@ const Post = ({post}) => {
         else return true;
     }
 
-    const sendComment = async () => {
+    const sendComment = async (e) => {
+        e.preventDefault();
         if (comText) {
             const dataCom = {
                 postId: post.postId,
@@ -54,6 +63,7 @@ const Post = ({post}) => {
             dispatch(getAllComments());
             setComText('');
             setViewComments(true);
+            setViewCommentField(false);
         }
     }
 
@@ -72,13 +82,39 @@ const Post = ({post}) => {
         }
     }
 
+    const handlePicture = (e) => {
+        setPicture(URL.createObjectURL(e.target.files[0]));
+        setFile(e.target.files[0]);
+    }
+
+    const handleModify = async () => {
+        if (file || message || fileDeleted) {
+            const data = new FormData();
+            if (fileDeleted) data.append('imgContent', 'noPic')
+            else if (file) data.append('imgContent', file)
+            if (message) data.append('textContent', message)
+            else data.append('textContent', post.textContent)
+            await dispatch(updatePost(post.postId, data));
+            dispatch(getPosts());
+            setModifying(false);
+            setFileDeleted(false);
+            setPicture();
+        }
+    }
+
+    const deletePicture = () => {
+        setFileDeleted(!fileDeleted);
+        setPicture();
+        setFile();
+    }
+
     return (
         <div className="post" key={post.postId}>
             <div className="post__head">
                 <div className="post__head__infos">
                     <a className="post__head__infos__img" href={`/profile${post.authorId}`}>
                         <img className="post__head__infos__img--img" src={!isEmpty(usersData[0])
-                             ?usersData.map((user) => {
+                            ? usersData.map((user) => {
                                 if (user.userId === post.authorId) return user.imageUrl;
                                 else return null;}).join('')
                             : 'http://localhost:4000/images/noAvatar2.png'}
@@ -91,8 +127,11 @@ const Post = ({post}) => {
                     <div className="post__head__infos__date">{'Posté le ' + dateParser(parseInt(post.date))}</div>
                 </div>
                 <div className="post__head__delete">
+                    {(post.authorId === parseInt(sessionStorage.currentUser)) && (
+                        <FontAwesomeIcon icon={faPencilAlt} className='fas-times post__head__delete__icons' onClick={() => setModifying(!modifying)}/>)}
+                    
                     {(post.authorId === parseInt(sessionStorage.currentUser) || userData.isAdmin) && (
-                        <FontAwesomeIcon icon={faTimes} className='fas-times' onClick={ async() => {
+                        <FontAwesomeIcon icon={faTimes} className='fas-times post__head__delete__icons' onClick={ async() => {
                             if (window.confirm("Etes-vous sûr(e) ?\n(Cette action est irréversible)")) {
                                 await dispatch(deleteCommentByPostId(post.postId));
                                 await dispatch(deleteLikeByPostId(post.postId));
@@ -105,37 +144,103 @@ const Post = ({post}) => {
                     )}
                 </div>
             </div>
-            {!isEmpty(post.textContent) && (
-                <div className="post__text">{post.textContent}</div>
-            )}
-            {post.imgContent && (
-                <div className="post__content">
-                    <img className="post__content--img" src={post.imgContent} alt=""></img>
+            {modifying && (
+                <div className={(!picture && (!post.imgContent || post.imgContent === 'noPic')) ? "post__text__div post__text__div--2" : "post__text__div"}>
+                    <textarea
+                        className="post__text__textarea"
+                        onChange={(e) => setMessage(e.target.value)}
+                        value={message}>
+                    </textarea>
                 </div>
             )}
+            {(!isEmpty(post.textContent) && !modifying) && (
+                <div className="post__text">{post.textContent}</div>
+            )}
+            {((post.imgContent && post.imgContent !== 'noPic') || picture) && 
+                <div className="post__content">
+                    <img className={fileDeleted ? "post__content--img post__content--img--darken" : "post__content--img"} src={!picture ? post.imgContent : picture} alt=""></img>
+                    {modifying &&
+                        <div className="post__content__icons">
+                            <FontAwesomeIcon
+                                icon={faTimes}
+                                className="post__content__icons__cross"
+                                onClick={(post.imgContent && post.imgContent !== 'noPic') ? () => {setFileDeleted(!fileDeleted)} : deletePicture}
+                                title="Supprimer l'image du post"/>
+                            <FontAwesomeIcon
+                                icon={faPencilAlt}
+                                className="post__content__icons__pencil"
+                                title="Modifier l'image"/>
+                            <input
+                                className="post__content__icons__input"
+                                type='file'
+                                accept='.jpg, .jpeg, .png, .webp'
+                                onChange={(e) => handlePicture(e)}
+                                title="Modifier l'image">
+                            </input>
+                        </div>}
+                    {(modifying && fileDeleted) && (<img src="./imgs/imageSlash.png" className="post__content__imgDelete" alt="L'image sera supprimée du post"></img>)}
+                </div>
+            }
+            {modifying && (
+                <div className="post__text__div">
+                    <div className="post__text__div__upload">
+                        <FontAwesomeIcon
+                            className={file ? "post__text__div__upload__file--red" : "post__text__div__upload__file"}
+                            icon={faImage}
+                            title="Uploadez une image"/>
+                        <input
+                            className="post__text__div__upload__input"
+                            type='file'
+                            accept='.jpg, .jpeg, .png, .webp'
+                            title='Uploadez une image'
+                            onChange={(e) => handlePicture(e)}>
+                        </input>
+                    </div>
+                    <FontAwesomeIcon className="post__text__send" icon={faPaperPlane} title="Enregistrer vos modifications" onClick={handleModify}/>
+                </div>
+            )}
+            <div className="post__preStuff">
+                <div className="post__preStuff__likes">
+                    <FontAwesomeIcon
+                        icon={faThumbsUp}
+                    /> 
+                    <p className="post__preStuff__numbers">{nbLikes()}</p>
+                </div>
+                <div className="post__preStuff__coms" onClick={() => {
+                    if(!isEmpty(commentsData[0])) {
+                        const isThereComments = Array.from(commentsData).find(comment => comment.postId === post.postId);
+                        if (isThereComments) setViewComments(!viewComments);
+                    }
+                }}>
+                    <p className="post__preStuff__numbers">{nbComments()}</p>
+                    <p className="post__preStuff__texte">commentaire{nbComments() > 1 && 's'}</p>
+                </div>
+            </div>
             <div className="post__stuff">
                 <div className="post__stuff__likes" onClick={sendLike}>
                     <FontAwesomeIcon
                         icon={faThumbsUp}
                         className={isLikedByUser() ? 'comAndLike comAndLike--red' : 'comAndLike'}
                     /> 
-                    <p className="post__stuff__numbers">{nbLikes()}</p>
+                    <p className={isLikedByUser() ? "post__stuff__texte post__stuff__texte--red" : "post__stuff__texte"}>J'aime</p>
                 </div>
-                <div className="post__stuff__comments" onClick={() => {
-                    if(!isEmpty(commentsData[0])) {
-                        const isThereComments = Array.from(commentsData).find(comment => comment.postId === post.postId);
-                        if (isThereComments) setViewComments(!viewComments);
-                    }
-                }}>
+                <div className="post__stuff__comments" onClick={() => setViewCommentField(!viewCommentField)}>
                     <FontAwesomeIcon icon={faCommentAlt} className='comAndLike'/>
-                    <p className="post__stuff__numbers">{nbComments()}</p>
+                    <p className="post__stuff__texte">Commenter</p>
                 </div>
             </div>
-            <div className="post__comment">
-                <input className="post__comment--input" placeholder="Ajoutez un commentaire..." onChange={(e) => setComText(e.target.value)} value={comText}></input>
-                <FontAwesomeIcon icon={faPaperPlane} className="post__comment--send" onClick={sendComment}/>
-            </div>
-            {!viewComments ? <div className="spacediv"></div> : <ComThread postId={post.postId}/>} 
+            {viewCommentField &&
+                <form className="post__comment" method="get" onSubmit={sendComment}>
+                    <input
+                        className="post__comment--input"
+                        placeholder="Ajoutez un commentaire..."
+                        onChange={(e) => setComText(e.target.value)}
+                        value={comText}>
+                    </input>
+                    <FontAwesomeIcon icon={faPaperPlane} className="post__comment--send" type="submit" onClick={e => sendComment(e)}/>
+                </form>
+            }
+            {!viewComments ? <div className="spacediv"></div> : <ComThread postId={post.postId}/>}
         </div>
     )
 };

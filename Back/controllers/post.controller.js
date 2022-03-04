@@ -70,6 +70,52 @@ exports.getPost = async (req, res) => {
     .catch(e => res.status(500).json(e))
 }
 
+exports.updatePost = async (req, res) => {
+    const Post = await prisma.posts.findUnique({
+        where : {
+            postId: parseInt(req.params.id)
+        }
+    })
+    .then(data => {
+        if (data.imgContent !== null && data.imgContent !== 'noPic') {
+            const fileToDelete = data.imgContent.split('/images/')[1];
+                fs.unlink(`images/${fileToDelete}`, () => {
+                    console.log('Image du post supprimée.')
+                })
+        }
+    })
+    try {
+        if (req.file) {
+            const imgContent = 'http://localhost:4000/' + req.file.path;
+            const NewPost = await prisma.posts.update({
+                where : {
+                    postId: parseInt(req.params.id)
+                },
+                data : {
+                    textContent: req.body.textContent,
+                    imgContent: imgContent
+                }
+            })
+            .then(() => res.status(200).json({message: 'Post modifié avec succès !'}))
+            .catch(e => res.status(500).json({message: 'Erreur dans updatePost ' + e}))
+        }
+        else {
+            const NewPost = await prisma.posts.update({
+                where : {
+                    postId: parseInt(req.params.id)
+                },
+                data : {
+                    textContent: req.body.textContent,
+                    imgContent: req.body.imgContent
+                }
+            })
+            .then(() => res.status(200).json({message: 'Post modifié avec succès !'}))
+            .catch(e => res.status(500).json({message: 'Erreur dans updatePost ' + e}))
+        }
+    }
+    catch {e => res.status(501).json(e)}
+}
+
 exports.deletePost = async (req, res, next) => {
     const post = await prisma.posts.findUnique({
         where: {

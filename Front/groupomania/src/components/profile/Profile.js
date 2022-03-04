@@ -72,7 +72,7 @@ const ProfileCard = () => {
                     }
                 }
                 else {
-                    errorPass1.innerText = "Le mot de passe avoir au moins\n- une majuscule\n- une minuscule\n- un chiffre\n- entre 7 et 20 caractères\n- aucun espace"
+                    errorPass1.innerText = "Le mot de passe doit avoir au moins\n- une majuscule\n- une minuscule\n- un chiffre\n- entre 7 et 20 caractères\n- aucun espace"
                     return false;
                 }
             }
@@ -193,7 +193,7 @@ const ProfileCard = () => {
                     onInput={(e) => setBio(e.target.value)}
                     value={bio}> 
                 </textarea>
-                <div>    
+                <div className="profileCard__butts">    
                     <div className='profileCard__butt' onClick={handleProfile}>Valider</div>
                 </div> 
             </div>
@@ -222,7 +222,7 @@ const ProfileCard = () => {
                 <p className="profileCard__email">{userData.email}</p>
                 <p className="profileCard__bio">{userData.bio ? '"' + userData.bio + '"' : 'Vous n\'avez pas renseigné votre biographie. Pourtant quelques mots seraient du plus bel effet ici...'}</p>
                 <p className="profileCard__posts">{'Auteur de ' + nbPosts(userData.userId)}</p>
-                <div>    
+                <div className="profileCard__butts">    
                     <div className='profileCard__butt' onClick={() => setLocked(false)}>Modifier le profil</div>
                     <div className='profileCard__butt' onClick={handleDeleteUser}>Supprimer le compte</div>
                 </div> 

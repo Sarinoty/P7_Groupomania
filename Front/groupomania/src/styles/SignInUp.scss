@@ -1,10 +1,9 @@
-
+@import './utils/mixins';
+@import './utils/placeholders';
+@import './utils/variables';
 
 .container {
-    display: flex;
-    flex-direction: column;
-    //justify-content: center;
-    align-items: flex-start;
+    @include flex-align (column, flex-start);
     font-size: 1.3rem;
     width: 100vw;
     margin: 0px;
@@ -13,10 +12,7 @@
 
 .sous-container {
     width: 100%;
-    display: flex;
-    //flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    @extend %flex-center;
 }
 
 .logo {
@@ -39,15 +35,13 @@ h1 {
     text-align: center;
     margin-top: 0;
     font-size: 1.8rem;
-    margin-bottom: 15px;
+    margin-bottom: 25px;
 }
 
 .cadre {
-    background-color: #90abd5;
-    //border: 2px solid gray ;
+    background-color: $bleumoyen;
     border-radius: 15px;
-    display: flex;
-    flex-direction: column;
+    @include flex-direction(column);
     padding: 25px;
     width: 75%;
     height: 80%;
@@ -69,20 +63,18 @@ h1 {
 
 .form {
     &__question {
-        display: flex;
-        flex-direction: column;
+        @include flex-direction(column);
     }
     &__butt {
-        display: flex;
-        justify-content: center;
+        @include flex-justify(row, center);
         margin-top: 10px;
         &__button {
-            background-color: #90abd5;
+            background-color: $bleumoyen;
             width: 35%;
             height: 40px;
             font-size: 1.3rem;
-            //border: 1px solid black;
-            box-shadow: 5px 5px 5px -1px rgba(0,0,0,0.66);
+            color: black;
+            @include theBoxShadow;
         }
     }
 }
@@ -96,7 +88,7 @@ input {
 }
 
 p {
-    color: #fd2d01;
+    color: $rougegroupomania;
     margin: 5px 0 5px 0;
     font-size: 1rem;
 }

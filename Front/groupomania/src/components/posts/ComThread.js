@@ -7,7 +7,7 @@ const ComThread = (post) => {
     const comments = useSelector((state) => state.commentReducer);
 
     return (
-        <div>
+        <div className="comThread">
             {!isEmpty(comments[0]) &&
                 comments.map((comment) => {if(comment.postId === post.postId) return <Comment comment={comment} key={comment.comId} />})}
         </div>

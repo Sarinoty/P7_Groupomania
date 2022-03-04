@@ -1,0 +1,76 @@
+@import './variables';
+
+@media screen and (max-width: 450px) {
+    .fas {
+        font-size: 1.3rem !important;
+    }
+    .nav {
+        grid-template-columns: 4fr 1fr 4fr !important;
+    }
+    .nav2 {
+        grid-template-columns: 4fr 1fr 4fr 1fr 4fr !important;
+    }
+    .post {
+        &__head {
+            &__infos {
+                &__img {
+                    width: 80px !important;
+                    height: 80px !important;
+                    padding: 5px 5px 5px 10px !important;
+                    &--img {
+                        width: 60px !important;
+                        height: 60px !important;
+                    }
+                }
+                &__name {
+                    font-size: $textereduit !important;
+                    padding-bottom: 5px !important;
+                }
+                &__date {
+                    font-size: 0.8rem !important;
+                }
+            }
+            &__delete {
+                min-width: 53px !important;
+                &__icons {
+                    margin-left: 0 !important;
+                }
+            }
+        }
+        &__content {
+            &__imgDelete {
+                width: 130px !important;
+                height: 100px !important;
+                
+                transform: translate(-65px, -50px) !important;
+            }
+        }
+        &__text {
+            font-size: $textereduit !important;
+            &__textarea {
+                font-size: $textereduit !important;
+            }
+        }
+        &__stuff {
+            &__texte {
+                font-size: $textereduit !important;
+            }
+        }
+    }
+    .comment {
+        &__content {
+            &__name {
+                font-size: $textereduit !important;
+            }
+        }
+        &__body {
+            font-size: $textereduit !important;
+        }
+    }
+}
+
+@media screen and (max-width: 543px) {
+    .fas-times {
+        font-size: 1rem !important;
+    }
+}

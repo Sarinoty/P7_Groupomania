@@ -41,9 +41,6 @@ const PostCreator = () => {
                     placeholder="Exprimez-vous !"
                     onChange={(e) => setMessage(e.target.value)}
                     value={message}></textarea>
-                <div className="post__creator__rowOne__send">
-                    <FontAwesomeIcon icon={faPaperPlane} className="comAndLike" onClick={handlePost}/>
-                </div>
             </div>
             <div className="post__creator__rowTwo">
                 <div className="post__creator__rowTwo__file">
@@ -54,7 +51,9 @@ const PostCreator = () => {
                         onChange={(e) => handlePicture(e)}>
                     </input>
                 </div>
-                <div className="post__creator__rowTwo__emptyDiv"></div>
+                <div className="post__creator__rowTwo__send">
+                    <FontAwesomeIcon icon={faPaperPlane} className="comAndLike" onClick={handlePost}/>
+                </div>
             </div>
         </div>
     )

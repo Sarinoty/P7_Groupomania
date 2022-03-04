@@ -29,7 +29,7 @@ model Posts {
   postId      Int     @id @default(autoincrement())
   author      User    @relation(fields: [authorId], references: [userId])
   authorId    Int
-  textContent String
+  textContent String  @db.VarChar(1000)
   imgContent  String?
   date        String
   //comments    Comments[]

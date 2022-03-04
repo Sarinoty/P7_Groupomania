@@ -1,4 +1,4 @@
-import { DELETE, GET, POST } from "../utils/axios";
+import { DELETE, GET, PATCH, POST } from "../utils/axios";
 import ENDPOINTS from '../utils/endpoints';
 
 export const ADD_POST = "ADD_POST";
@@ -31,5 +31,12 @@ export const deletePost = (id) => {
                 //console.log(res)
             })
             .catch(e => console.log(e));
+    }
+}
+
+export const updatePost = (id, data) => {
+    return () => {
+        return PATCH(`${ENDPOINTS.UPDATE_POST}${id}`, data)
+            .catch(e => console.log('Erreur : ' + e))
     }
 }

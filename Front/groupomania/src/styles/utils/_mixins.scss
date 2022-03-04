@@ -1,0 +1,25 @@
+@mixin flex ($direction, $justify, $align) {
+    display: flex;
+    flex-direction: $direction;
+    justify-content: $justify;
+    align-items: $align;
+}
+@mixin flex-justify ($direction, $justify) {
+    display: flex;
+    flex-direction: $direction;
+    justify-content: $justify;
+}
+@mixin flex-align ($direction, $align) {
+    display: flex;
+    flex-direction: $direction;
+    align-items: $align;
+}
+
+@mixin flex-direction ($direction) {
+    display: flex;
+    flex-direction: $direction;
+}
+
+@mixin theBoxShadow {
+    box-shadow: 3px 3px 5px -2px #000000;
+}
