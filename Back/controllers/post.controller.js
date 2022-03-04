@@ -100,6 +100,7 @@ exports.updatePost = async (req, res) => {
             .catch(e => res.status(500).json({message: 'Erreur dans updatePost ' + e}))
         }
         else {
+            console.log(req.body)
             const NewPost = await prisma.posts.update({
                 where : {
                     postId: parseInt(req.params.id)

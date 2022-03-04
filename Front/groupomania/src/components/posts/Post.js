@@ -30,6 +30,15 @@ const Post = ({post}) => {
     const [video, setVideo] = useState('');
     const dispatch = useDispatch();
 
+/*     useEffect(() => {
+        if (!post.imgContent && (post.imgContent.includes('https://www.youtu') || post.imgContent.includes('https://youtu'))) {
+            setVideo(post.imgContent);
+            setPicture();
+            setFile();
+        }
+        else return false;
+    }); */
+
     useEffect(() => {
         handleVideo();
     }, [message, video]);
@@ -95,6 +104,7 @@ const Post = ({post}) => {
                 setVideo(embeded.split('&')[0]);
                 linkToFind.splice(i, 1);
                 setMessage(linkToFind.join(' '));
+                console.log(message)
                 setPicture('');
                 setFile('');
             }
@@ -129,9 +139,17 @@ const Post = ({post}) => {
         setVideo('');
     }
 
-    /* const styleVideo = {
-        innerWidth: 100%
-    } */
+    const largeurVideo = () => {
+        const widew = window.innerWidth;
+        let hauteur = 0;
+        if (widew >= 940) {
+            hauteur = (860 * 56.25)/100;
+        }
+        else {
+            hauteur = ((widew - 80)*56.25)/100;
+        }
+        return hauteur;
+    }
 
     return (
         <div className="post" key={post.postId}>
@@ -168,6 +186,9 @@ const Post = ({post}) => {
                     )}
                 </div>
             </div>
+            {(!isEmpty(post.textContent) && !modifying) && (
+                <div className="post__text">{post.textContent}</div>
+            )}
             {modifying && (
                 <div className={(!picture && (!post.imgContent || post.imgContent === 'noPic')) ? "post__text__div post__text__div--2" : "post__text__div"}>
                     <textarea
@@ -177,22 +198,20 @@ const Post = ({post}) => {
                     </textarea>
                 </div>
             )}
-            {(!isEmpty(post.textContent) && !modifying) && (
-                <div className="post__text">{post.textContent}</div>
-            )}
             {((post.imgContent && post.imgContent !== 'noPic') || picture || video) && 
-                <div className="post__content">
-                    {((post.imgContent && post.imgContent !== 'noPic') || picture) &&
+                <div id="reference" className="post__content">
+                    {(((post.imgContent && post.imgContent !== 'noPic' && (!post.imgContent.includes('https://www.youtu') || !post.imgContent.includes('https://youtu'))) || picture) && (video && video !== '')) &&
                         <img
                             className={fileDeleted ? "post__content--img post__content--img--darken" : "post__content--img"}
                             src={!picture ? post.imgContent : picture}
-                            alt="Post"></img>
+                            alt="Contenu non disponible"></img>
                     }
-                    {video &&
+                    {(video || (post.imgContent.includes('https://www.youtu') || post.imgContent.includes('https://youtu'))) &&
                         <iframe
-                            style={{width: '100%'}}
+                            /* id="iframe" */
+                            style={{width: '100%', height: largeurVideo()}}
                             className={fileDeleted ? "post__content__video post__content__video--darken" : "post__content__video"}
-                            src={video}
+                            src={video ? video : post.imgContent}
                             frameBorder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowFullScreen
