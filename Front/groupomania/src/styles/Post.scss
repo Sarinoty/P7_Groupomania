@@ -111,6 +111,13 @@ a {
                 filter: brightness(50%);
             }
         }
+        &__video {
+            width: 100%;
+            height: calc((width*56)/100);
+            &--darken {
+                filter: brightness(50%);
+            }
+        }
         &__icons {
             @include flex(row-reverse, flex-end, center);
             position: absolute;

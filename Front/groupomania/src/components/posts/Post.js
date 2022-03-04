@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import '../../styles/Post.scss';
 import '../../styles/utils/media-queries.scss';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,7 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { dateParser } from '../../utils/Date';
 import { deletePost, getPosts, updatePost } from "../../actions/post.action";
 import { addComment, deleteCommentByPostId, getAllComments } from "../../actions/comment.action";
-import ComThread from "./ComThread";
+import ComThread from "../Comment/ComThread";
 import { addLike, deleteLike, deleteLikeByPostId, getLikes } from "../../actions/like.action";
 
 
@@ -27,7 +27,12 @@ const Post = ({post}) => {
     const [file, setFile] = useState();
     const [picture, setPicture] = useState();
     const [message, setMessage] = useState(post.textContent ? post.textContent : 'Ajoutez du texte');
+    const [video, setVideo] = useState('');
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        handleVideo();
+    }, [message, video]);
 
     const nbComments = () => {
         let nb = 0;
@@ -82,18 +87,33 @@ const Post = ({post}) => {
         }
     }
 
+    const handleVideo = () => {
+        let linkToFind = message.split(' ');
+        for (let i = 0; i < linkToFind.length; i++) {
+            if (linkToFind[i].includes('https://www.youtu') || linkToFind[i].includes('https://youtu')) {
+                let embeded = linkToFind[i].replace('watch?v=', 'embed/');
+                setVideo(embeded.split('&')[0]);
+                linkToFind.splice(i, 1);
+                setMessage(linkToFind.join(' '));
+                setPicture('');
+                setFile('');
+            }
+        }
+    }
+
     const handlePicture = (e) => {
         setPicture(URL.createObjectURL(e.target.files[0]));
         setFile(e.target.files[0]);
     }
 
     const handleModify = async () => {
-        if (file || message || fileDeleted) {
+        if (file || message || fileDeleted || video) {
             const data = new FormData();
-            if (fileDeleted) data.append('imgContent', 'noPic')
-            else if (file) data.append('imgContent', file)
-            if (message) data.append('textContent', message)
-            else data.append('textContent', post.textContent)
+            if (fileDeleted) data.append('imgContent', 'noPic');
+            else if (file) data.append('imgContent', file);
+            else if (video) data.append('imgContent', video);
+            if (message) data.append('textContent', message);
+            else data.append('textContent', post.textContent);
             await dispatch(updatePost(post.postId, data));
             dispatch(getPosts());
             setModifying(false);
@@ -106,7 +126,12 @@ const Post = ({post}) => {
         setFileDeleted(!fileDeleted);
         setPicture();
         setFile();
+        setVideo('');
     }
+
+    /* const styleVideo = {
+        innerWidth: 100%
+    } */
 
     return (
         <div className="post" key={post.postId}>
@@ -155,9 +180,24 @@ const Post = ({post}) => {
             {(!isEmpty(post.textContent) && !modifying) && (
                 <div className="post__text">{post.textContent}</div>
             )}
-            {((post.imgContent && post.imgContent !== 'noPic') || picture) && 
+            {((post.imgContent && post.imgContent !== 'noPic') || picture || video) && 
                 <div className="post__content">
-                    <img className={fileDeleted ? "post__content--img post__content--img--darken" : "post__content--img"} src={!picture ? post.imgContent : picture} alt=""></img>
+                    {((post.imgContent && post.imgContent !== 'noPic') || picture) &&
+                        <img
+                            className={fileDeleted ? "post__content--img post__content--img--darken" : "post__content--img"}
+                            src={!picture ? post.imgContent : picture}
+                            alt="Post"></img>
+                    }
+                    {video &&
+                        <iframe
+                            style={{width: '100%'}}
+                            className={fileDeleted ? "post__content__video post__content__video--darken" : "post__content__video"}
+                            src={video}
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                            title={video}></iframe>
+                    }
                     {modifying &&
                         <div className="post__content__icons">
                             <FontAwesomeIcon

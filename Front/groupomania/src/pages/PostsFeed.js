@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from '../components/header/Header';
-import Thread from '../components/Thread';
+import Thread from '../components/posts/Thread';
 import PostCreator from '../components/posts/PostCreator';
 import '../styles/general.scss';
 import { useDispatch } from "react-redux";
