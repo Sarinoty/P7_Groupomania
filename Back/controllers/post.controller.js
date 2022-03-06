@@ -20,11 +20,12 @@ exports.addPost = async (req, res, next) => {
             .catch (e => res.status(500).json({e}))
         }
         else {
-            const {authorId, textContent, date} = req.body;
+            const {authorId, textContent, imgContent, date} = req.body;
             const Post = await prisma.posts.create({
                 data: {
                     authorId: parseInt(authorId),
                     textContent,
+                    imgContent,
                     date
                 },
             })
@@ -100,7 +101,6 @@ exports.updatePost = async (req, res) => {
             .catch(e => res.status(500).json({message: 'Erreur dans updatePost ' + e}))
         }
         else {
-            console.log(req.body)
             const NewPost = await prisma.posts.update({
                 where : {
                     postId: parseInt(req.params.id)

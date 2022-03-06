@@ -9,8 +9,4 @@ router.get('/:id', authorize, userController.getUser);
 router.patch('/updateProfile/:userId', authorize, multer.single("imageUrl"), userController.updateProfile);
 router.delete('/:id', authorize, userController.deleteProfile);
 
-/* router.get('/friends/', authorize, userController.getFriends);
-router.put('/friends/:id', authorize, userController.addFriend);
-router.delete('/friends/:id', authorize, userController.deleteFriend); */
-
 module.exports = router;

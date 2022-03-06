@@ -26,18 +26,10 @@ const Post = ({post}) => {
     const [fileDeleted, setFileDeleted] = useState(false);
     const [file, setFile] = useState();
     const [picture, setPicture] = useState();
-    const [message, setMessage] = useState(post.textContent ? post.textContent : 'Ajoutez du texte');
+    const [message, setMessage] = useState(post.textContent ? post.textContent : 'Ajoutez du texte ou supprimez ce texte si vous ne souhaitez poster que du contenu multimédia');
     const [video, setVideo] = useState('');
     const dispatch = useDispatch();
 
-/*     useEffect(() => {
-        if (!post.imgContent && (post.imgContent.includes('https://www.youtu') || post.imgContent.includes('https://youtu'))) {
-            setVideo(post.imgContent);
-            setPicture();
-            setFile();
-        }
-        else return false;
-    }); */
 
     useEffect(() => {
         handleVideo();
@@ -104,7 +96,6 @@ const Post = ({post}) => {
                 setVideo(embeded.split('&')[0]);
                 linkToFind.splice(i, 1);
                 setMessage(linkToFind.join(' '));
-                console.log(message)
                 setPicture('');
                 setFile('');
             }
@@ -114,6 +105,7 @@ const Post = ({post}) => {
     const handlePicture = (e) => {
         setPicture(URL.createObjectURL(e.target.files[0]));
         setFile(e.target.files[0]);
+        setVideo('');
     }
 
     const handleModify = async () => {
@@ -122,13 +114,13 @@ const Post = ({post}) => {
             if (fileDeleted) data.append('imgContent', 'noPic');
             else if (file) data.append('imgContent', file);
             else if (video) data.append('imgContent', video);
-            if (message) data.append('textContent', message);
-            else data.append('textContent', post.textContent);
+            data.append('textContent', message);
             await dispatch(updatePost(post.postId, data));
             dispatch(getPosts());
             setModifying(false);
             setFileDeleted(false);
             setPicture();
+            setFile('');
         }
     }
 
@@ -200,20 +192,18 @@ const Post = ({post}) => {
             )}
             {((post.imgContent && post.imgContent !== 'noPic') || picture || video) && 
                 <div id="reference" className="post__content">
-                    {(((post.imgContent && post.imgContent !== 'noPic' && (!post.imgContent.includes('https://www.youtu') || !post.imgContent.includes('https://youtu'))) || picture) && (video && video !== '')) &&
+                    {(((post.imgContent && post.imgContent !== 'noPic' && !(post.imgContent.includes('https://www.youtu') || post.imgContent.includes('https://youtu'))) || (picture && picture !== '')) && (!video || video === '')) &&
                         <img
                             className={fileDeleted ? "post__content--img post__content--img--darken" : "post__content--img"}
                             src={!picture ? post.imgContent : picture}
                             alt="Contenu non disponible"></img>
                     }
-                    {(video || (post.imgContent.includes('https://www.youtu') || post.imgContent.includes('https://youtu'))) &&
+                    {((video || (post.imgContent.includes('https://www.youtu') || post.imgContent.includes('https://youtu'))) && !picture) &&
                         <iframe
-                            /* id="iframe" */
                             style={{width: '100%', height: largeurVideo()}}
                             className={fileDeleted ? "post__content__video post__content__video--darken" : "post__content__video"}
                             src={video ? video : post.imgContent}
                             frameBorder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowFullScreen
                             title={video}></iframe>
                     }
@@ -221,20 +211,24 @@ const Post = ({post}) => {
                         <div className="post__content__icons">
                             <FontAwesomeIcon
                                 icon={faTimes}
-                                className="post__content__icons__cross"
+                                className={(post.imgContent.includes('https://www.youtu') || post.imgContent.includes('https://youtu')) ? "post__content__icons__cross2" : "post__content__icons__cross"}
                                 onClick={(post.imgContent && post.imgContent !== 'noPic') ? () => {setFileDeleted(!fileDeleted)} : deletePicture}
                                 title="Supprimer l'image du post"/>
-                            <FontAwesomeIcon
-                                icon={faPencilAlt}
-                                className="post__content__icons__pencil"
-                                title="Modifier l'image"/>
-                            <input
-                                className="post__content__icons__input"
-                                type='file'
-                                accept='.jpg, .jpeg, .png, .webp'
-                                onChange={(e) => handlePicture(e)}
-                                title="Modifier l'image">
-                            </input>
+                            {!(post.imgContent.includes('https://www.youtu') || post.imgContent.includes('https://youtu')) &&
+                                <FontAwesomeIcon
+                                    icon={faPencilAlt}
+                                    className="post__content__icons__pencil"
+                                    title="Modifier l'image"/>
+                            }
+                            {!(post.imgContent.includes('https://www.youtu') || post.imgContent.includes('https://youtu')) &&
+                                <input
+                                    className="post__content__icons__input"
+                                    type='file'
+                                    accept='.jpg, .jpeg, .png, .webp'
+                                    onChange={(e) => handlePicture(e)}
+                                    title="Modifier l'image">
+                                </input>
+                            }
                         </div>}
                     {(modifying && fileDeleted) && (<img src="./imgs/imageSlash.png" className="post__content__imgDelete" alt="L'image sera supprimée du post"></img>)}
                 </div>

@@ -112,21 +112,24 @@ a {
             }
         }
         &__video {
-            //width: 100%;
-            //height: 100%;
             &--darken {
                 filter: brightness(50%);
             }
         }
         &__icons {
             @include flex(row-reverse, flex-end, center);
+            background-color: $bleumoyen;
             position: absolute;
             top: 7px;
-            right: 30px;
+            right: 26px;
             font-size: 2rem;
+            padding: 0 10px;
             &__cross {
                 @extend %pointerCursor;
                 margin-left: 10px;
+            }
+            &__cross2 {
+                @extend %pointerCursor;
             }
             &__pencil {
                 font-size: 1.6rem;
@@ -240,37 +243,47 @@ a {
             }
         }
         &__rowTwo {
-            @include flex(row, flex-end, flex-start);
+            @include flex(row, space-between, flex-start);
             min-height: 40px;
             margin-top: 2px;
-            &__file {
-                font-size: 1.7rem;
-                position: relative;
-                width: 40px;
-                &--icon {
-                    position: absolute;
-                    left: 8px;
-                    height: 30px;
-                    z-index: 1;
-                    &--red {
-                        color: $rougegroupomania;
+            &__info {
+                color: black;
+                font-size: 1.1rem;
+                font-style: italic;
+                margin-left: 75px;
+                margin-top: 0;
+            }
+            &__icons {
+                @include flex-direction(row);
+                &__file {
+                    font-size: 1.7rem;
+                    position: relative;
+                    width: 40px;
+                    &--icon {
+                        position: absolute;
+                        left: 8px;
+                        height: 30px;
+                        z-index: 1;
+                        &--red {
+                            color: $rougegroupomania;
+                        }
+                    }
+                    &--input {
+                        @extend %pointerCursor;
+                        position: absolute;
+                        opacity: 0;
+                        border-radius: 0;
+                        width: 30px;
+                        height: 30px;
+                        z-index: 2;
                     }
                 }
-                &--input {
-                    @extend %pointerCursor;
-                    position: absolute;
-                    opacity: 0;
-                    border-radius: 0;
-                    width: 30px;
-                    height: 30px;
-                    z-index: 2;
+                &__send {
+                    width: 41px;
+                    font-size: 1.2rem;
+                    margin-left: 10px;
+                    padding-bottom: 10px;
                 }
-            }
-            &__send {
-                width: 41px;
-                font-size: 1.2rem;
-                margin-left: 10px;
-                padding-bottom: 10px;
             }
         }
     }
