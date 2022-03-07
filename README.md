@@ -37,6 +37,10 @@ De plus, chaque utilisateur possède une page profil. Sur cette page il pourra :
 - modifier sa biographie
 - supprimer son compte (et ainsi tous ses posts, commentaires et likes).
 
+Pour finir, un utilisateur pourra recevoir les droits d'administrateur et aura ainsi la possibilité de :
+- supprimer n'importe quel commentaire (qu'il en soit l'auteur ou non),
+- supprimer de la même façon n'importe quel post.
+
 ### Pour lancer le projet ###
 Placez-vous dans le dossier Back et exécutez la commande `npm install` puis, une fois l'installation terminée `nodemon server`.
 Pour la base de données, exécutez la commande `npx prisma migrate dev`.
