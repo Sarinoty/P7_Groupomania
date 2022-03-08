@@ -26,7 +26,7 @@ const Post = ({post}) => {
     const [fileDeleted, setFileDeleted] = useState(false);
     const [file, setFile] = useState();
     const [picture, setPicture] = useState();
-    const [message, setMessage] = useState(post.textContent ? post.textContent : 'Ajoutez du texte ou supprimez ce texte si vous ne souhaitez poster que du contenu multimédia');
+    const [message, setMessage] = useState(post.textContent ? post.textContent : '');
     const [video, setVideo] = useState('');
     const dispatch = useDispatch();
 
@@ -186,6 +186,7 @@ const Post = ({post}) => {
                     <textarea
                         className="post__text__textarea"
                         onChange={(e) => setMessage(e.target.value)}
+                        placeholder={message ? '' : 'Vous pouvez ajouter un message ici'}
                         value={message}>
                     </textarea>
                 </div>

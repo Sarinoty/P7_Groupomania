@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Header from '../components/header/Header';
-import ProfileCard from '../components/profile/Profile';
+import ProfileCard from '../components/profile/ProfileCard';
 import '../styles/Header.scss';
 import { getUser } from '../actions/user.action';
 import { getPosts } from '../actions/post.action';
