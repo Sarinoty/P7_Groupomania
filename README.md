@@ -25,7 +25,6 @@ Une fois connecté il arrive sur le fil d'actualités. Dans ce fil il a la possi
 Par la suite il pourra :
 - modifier un de ses posts,
 - supprimer un de ses posts,
-- modifier un commentaire qu'il a déposé,
 - supprimer un de ses commantaires,
 - retirer un de ses likes
 
