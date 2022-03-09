@@ -9,7 +9,7 @@ const ComThread = (post) => {
     return (
         <div className="comThread">
             {!isEmpty(comments[0]) &&
-                comments.map((comment) => {if(comment.postId === post.postId) return <Comment comment={comment} key={comment.comId} />})}
+                comments.map((comment) => {if(comment.postId === post.postId) return <Comment comment={comment} key={comment.comId} />; else return false})}
         </div>
     )
 }
