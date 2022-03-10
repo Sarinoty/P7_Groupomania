@@ -158,15 +158,14 @@ exports.deleteProfile = async (req, res, next) => {
         }
     })
     .then((data) => {
-        if (data.imageUrl !== 'http://localhost:4000/images/noAvatar2.png') {
+        if (data.imageUrl && data.imageUrl !== 'http://localhost:4000/images/noAvatar2.png' && data.imageUrl !== 'noPic') {
             const fileToDelete = data.imageUrl.split('/images')[1];
             fs.unlink(`images/${fileToDelete}`, () => {
                 console.log('Avatar supprimé')
             })
         }
     })
-    .catch(e => console.log('Erreur lors de la suppression de l\'avatar ' + e))
-    
+    .catch(e => console.log('Erreur lors de la suppression de l\'avatar : ' + e))
     const deleteProfile = await prisma.user.delete({
         where: {
             userId: parseInt(req.params.id)

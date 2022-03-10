@@ -64,6 +64,7 @@ const PostCreator = () => {
                     <img className="post__creator__rowOne__pic--img" src={userData.imageUrl} alt=""></img>
                 </div>
                 <textarea className="post__creator__rowOne__input"
+                    aria-label="Ecrivez ici votre post"
                     placeholder="Exprimez-vous !"
                     onChange={(e) => setMessage(e.target.value)}
                     value={message}></textarea>
@@ -77,11 +78,12 @@ const PostCreator = () => {
                         <input className="post__creator__rowTwo__icons__file--input"
                             type='file'
                             accept='.jpg, .jpeg, .png, .webp'
+                            aria-label='Ajoutez une image'
                             onChange={(e) => handlePicture(e)}>
                         </input>
                     </div>
                     <div className="post__creator__rowTwo__icons__send">
-                        <FontAwesomeIcon icon={faPaperPlane} className="comAndLike" onClick={handlePost}/>
+                        <FontAwesomeIcon icon={faPaperPlane} className="comAndLike" onClick={handlePost} role='Postez !'/>
                     </div>
                 </div>
             </div>

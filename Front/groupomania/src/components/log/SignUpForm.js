@@ -72,7 +72,7 @@ const SignUpForm = (props) => {
                     <div className='form__question'>
                         <label htmlFor="email">Adresse e-mail :</label>
                         <input
-                            type="email"
+                            type="text"
                             name='email'
                             id='email'
                             required

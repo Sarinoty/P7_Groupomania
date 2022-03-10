@@ -20,9 +20,9 @@ const ProfileCard = () => {
     const [locked, setLocked] = useState(true);
     const [mail, setMail] = useState(userData.email);
     const [bio, setBio] = useState('');
-    const [file, setFile] = useState();
+    const [file, setFile] = useState('');
     const [privateMail, setPrivateMail] = useState(false);
-    const [picture, setPicture] = useState();
+    const [picture, setPicture] = useState('');
     const [password1, setPassword1] = useState('');
     const [password2, setPassword2] = useState('');
     const dispatch = useDispatch();
@@ -94,7 +94,6 @@ const ProfileCard = () => {
             await dispatch(deleteLikesByUserId(parseInt(sessionStorage.currentUser)));
             await dispatch(deleteCommentsByUserId(parseInt(sessionStorage.currentUser)));
             if (!isEmpty(postsData[0])) {
-                console.log('Passe')
                 Array.prototype.forEach.call(postsData, post => {
                     if(post.authorId === parseInt(sessionStorage.currentUser)) {
                         dispatch(deletePost(parseInt(post.postId)))

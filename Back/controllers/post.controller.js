@@ -125,7 +125,7 @@ exports.deletePost = async (req, res, next) => {
     })
         .then(data => {
             if(data) {
-                if (data.imgContent !== null && data.imgContent !== 'noPic') {
+                if (data.imgContent !== null && data.imgContent !== 'noPic' && !(data.imgContent.includes('https://www.youtu') || data.imgContent.includes('https://youtu'))) {
                     const fileToDelete = data.imgContent.split('/images/')[1];
                     fs.unlink(`images/${fileToDelete}`, () => {
                         console.log('Image du post supprimée.')
