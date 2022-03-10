@@ -18,7 +18,6 @@ export const getPosts = () => { // A enlever (ainsi que la route et le endpoint)
     return (dispatch) => {
         return GET(ENDPOINTS.GET_POSTS)
             .then((res) => {
-                //console.log(res)
                 dispatch({type: GET_POSTS, payload: res.data});
             }).catch (e => console.log('Erreur : ' + e))
     }

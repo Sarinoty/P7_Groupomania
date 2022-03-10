@@ -26,16 +26,22 @@ const SignUpForm = (props) => {
                         lastNameError.innerHTML = '';
                         passwordError.innerHTML = '';
                         break;
+                    case 'badInputMail' :
+                        emailError.innerHTML = 'Vérifiez le format de l\'adresse e-mail !';
+                        firstNameError.innerHTML = '';
+                        lastNameError.innerHTML = '';
+                        passwordError.innerHTML = '';
+                        break;
                     case 'badInputFirstName' :
                         emailError.innerHTML = '';
-                        firstNameError.innerHTML = 'Erreur de saisie';
+                        firstNameError.innerHTML = 'Cela ne semble pas être un prénom valide...';
                         lastNameError.innerHTML = '';
                         passwordError.innerHTML = '';
                         break;
                     case 'badInputLastName' :
                         emailError.innerHTML = '';
                         firstNameError.innerHTML = '';
-                        lastNameError.innerHTML = 'Erreur de saisie';
+                        lastNameError.innerHTML = 'Cela ne semble pas être un nom valide...';
                         passwordError.innerHTML = '';
                         break;
                     case 'invalidPassword' :

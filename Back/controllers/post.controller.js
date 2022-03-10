@@ -125,7 +125,7 @@ exports.deletePost = async (req, res, next) => {
     })
         .then(data => {
             if(data) {
-                if (data.imgContent !== null) {
+                if (data.imgContent !== null && data.imgContent !== 'noPic') {
                     const fileToDelete = data.imgContent.split('/images/')[1];
                     fs.unlink(`images/${fileToDelete}`, () => {
                         console.log('Image du post supprimée.')
@@ -141,6 +141,4 @@ exports.deletePost = async (req, res, next) => {
             else console.log("Il n'y a pas de post à supprimer")
         })
         .catch((e) => console.log('Erreur dans findUnique de deletePost' + e))
-
-    
 }

@@ -40,10 +40,10 @@ const SignInForm = (props) => {
                 <div className='form__question'>
                     <label htmlFor="email">Adresse e-mail :</label>
                     <input
-                        type='email'
+                        type='text' // La vérification se fera au niveau du back-end
                         name='email'
                         id='email'
-                        required
+                        /* required */
                         onChange={(event) => setEmail(event.target.value)}
                         value={email}></input>
                     <p id='emailInError'></p>

@@ -115,12 +115,27 @@ const Post = ({post}) => {
             else if (file) data.append('imgContent', file);
             else if (video) data.append('imgContent', video);
             data.append('textContent', message);
+            if ((!file || file === '') && (!message || message === '') && fileDeleted && (!video || video === ''))
+                alert('Vous ne pouvez pas laisser un post vide.\nEcrivez quelques mots ou supprimez le post.')
+            
+            else {
+                await dispatch(updatePost(post.postId, data));
+                dispatch(getPosts());
+                setModifying(false);
+                setFileDeleted(false);
+                setPicture();
+                setFile('');
+            }
+        }
+        else if (post.imgContent && post.imgContent !== 'noPic') {
+            const data = new FormData();
+            data.append('textContent', message);
             await dispatch(updatePost(post.postId, data));
-            dispatch(getPosts());
-            setModifying(false);
-            setFileDeleted(false);
-            setPicture();
-            setFile('');
+                dispatch(getPosts());
+                setModifying(false);
+                setFileDeleted(false);
+                setPicture();
+                setFile('');
         }
     }
 

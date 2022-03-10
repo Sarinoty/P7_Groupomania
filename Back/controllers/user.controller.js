@@ -11,6 +11,8 @@ exports.signup = async (req, res, next) => {
         res.status(200).json({message: 'badInputFirstName'});
     else if (!verifNames(req.body.lastName))
         res.status(200).json({message: 'badInputLastName'});
+    else if (!verifMail(req.body.email))
+        res.status(200).json({message: 'badInputMail'});
     else {
         try {
             const salt = bcrypt.genSaltSync(14);
@@ -200,4 +202,12 @@ function crypting(password) {
 
 function verifNames(n) {
     return /^[^@&"()!_$*€£`+=\/;?#\d]+$/.test(n);
+}
+/**
+     * Vérifie que l'adresse e-mail saisie correspond bien au format xxx@xxx.xxx
+     * @param { String } adresse 
+     * @returns booléen
+     */
+ function verifMail(adresse) {
+    return /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/.test(adresse);
 }

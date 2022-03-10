@@ -94,6 +94,7 @@ const ProfileCard = () => {
             await dispatch(deleteLikesByUserId(parseInt(sessionStorage.currentUser)));
             await dispatch(deleteCommentsByUserId(parseInt(sessionStorage.currentUser)));
             if (!isEmpty(postsData[0])) {
+                console.log('Passe')
                 Array.prototype.forEach.call(postsData, post => {
                     if(post.authorId === parseInt(sessionStorage.currentUser)) {
                         dispatch(deletePost(parseInt(post.postId)))
