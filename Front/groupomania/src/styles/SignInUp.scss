@@ -15,7 +15,11 @@
     position: absolute;
     width: 100vw;
     height: 100vh;
-    background-color: $bleufonce;
+    //background-color: $bleufonce;
+    background-image: url('../../public/logobig2.png'), url('../../public/imgs/fd.png');
+    background-repeat: no-repeat, repeat;
+    background-position: 1100px 200px ;
+    background-attachment: fixed;
     z-index: 5;
     opacity: 100%;
     animation: disappear 2000ms cubic-bezier(.95,0,.86,1.08) forwards;
