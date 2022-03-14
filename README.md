@@ -43,7 +43,7 @@ Pour finir, un utilisateur pourra recevoir les droits d'administrateur et aura a
 ### Pour lancer le projet ###
 Placez-vous dans le dossier Back et exécutez la commande `npm install` puis, une fois l'installation terminée `nodemon server`.
 
-Pour la base de données, créez une nouvelle base MySQL. Mettez à jour la valeur de `DATABASE_URL` avec vos informations dans le fichier `.env` du dossier `Back`. Ensuite exécutez la commande `npx prisma migrate dev --firstmig init`. Enfin installez le client Prisma avec la commande `npm install @prisma/client`.
+Pour la base de données, créez une nouvelle base MySQL. Mettez à jour la valeur de `DATABASE_URL` avec vos informations dans le fichier `.env` du dossier `Back`.  Ensuite exécutez la commande `npx prisma migrate dev --firstmig init`.  Enfin installez le client Prisma avec la commande `npm install @prisma/client`. 
 Pour plus d'informations : https://www.prisma.io/docs/getting-started/setup-prisma/start-from-scratch/relational-databases/connect-your-database-node-mysql
 
 Et enfin pour le Front-end, placez-vous dans le dossier Front, exécutez `npm install` puis `npm start`. Le Front-end sera disponible sur : `localhost:3000/`.
