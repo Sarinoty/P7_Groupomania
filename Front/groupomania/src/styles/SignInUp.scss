@@ -134,6 +134,9 @@ h1 {
     &__question {
         @include flex-direction(column);
     }
+    &__errors {
+        margin-top: 0;
+    }
     &__butt {
         @include flex-justify(row, center);
         margin-top: 10px;

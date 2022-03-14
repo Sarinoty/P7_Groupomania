@@ -81,17 +81,6 @@ const SignUpForm = (props) => {
                         <p id='emailUpError'></p>
                     </div>
                     <div className='form__question'>
-                        <label htmlFor="firstName">Prénom :</label>
-                        <input
-                            type="text"
-                            name='firstName'
-                            id='firstNAme'
-                            /* required */
-                            onChange={(event) => setFirstName(event.target.value)}
-                            value={firstName}></input>
-                        <p id='firstNameUpError'></p>
-                    </div>
-                    <div className='form__question'>
                         <label htmlFor="lastName">Nom :</label>
                         <input
                             type="text"
@@ -101,6 +90,17 @@ const SignUpForm = (props) => {
                             onChange={(event) => setLastName(event.target.value)}
                             value={lastName}></input>
                         <p id='lastNameUpError'></p>
+                    </div>
+                    <div className='form__question'>
+                        <label htmlFor="firstName">Prénom :</label>
+                        <input
+                            type="text"
+                            name='firstName'
+                            id='firstNAme'
+                            /* required */
+                            onChange={(event) => setFirstName(event.target.value)}
+                            value={firstName}></input>
+                        <p id='firstNameUpError'></p>
                     </div>
                     <div className='form__question'>
                         <label htmlFor="password">Mot de passe :</label>
